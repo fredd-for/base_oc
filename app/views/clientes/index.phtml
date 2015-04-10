@@ -1,0 +1,296 @@
+
+<div class="row">
+	<div class="col-sm-12">
+		<div class="panel">
+			<div class="panel-heading">
+				<h4>Listado de Clientes</h4>
+				<div class="options">
+					<ul class="nav nav-tabs">
+						<li class="active"><a data-toggle="tab" href="#domshortcuttiles"><i class="fa fa-users"></i></a></li>
+						<li><a data-toggle="tab" href="#codeshortcuttiles"><i class="fa fa-code"></i></a></li>
+					</ul>
+				</div>
+			</div>
+			<div class="panel-body">
+				<div class="tab-content">
+					<div class="row">
+						<div class="col-md-12">
+							<?php echo $this->flashSession->output(); ?>
+							<div id="divMsjeExito" class="msjs-alert" hidden="hidden">
+								<button class="close" aria-hidden="true" data-dismiss="alert" type="button">×</button>
+								<h5>
+									<i class="fa fa-check-circle"></i>
+									<!-- &Eacute;xito! -->
+									<a class="alert-link" href="javascript:void(0)" id="aMsjeExito"></a>
+								</h5>
+								
+							</div>
+						</div>
+					</div>
+					<div class="row">
+						<div class="col-md-12">
+							<div class="pull-right">
+								<button class="btn btn-sm btn-primary" type="button" id="add"><i class="fa fa-plus fa-fw"></i>Adicionar</button>
+								<button class="btn btn-sm btn-defaul" type="button" id="crear_contrato"><i class="fa fa-plus fa-fw"></i>Crear Contrato</button>
+								<button class="btn btn-sm btn-warning" type="button" id="edit"><i class="fa fa-pencil fa-fw"></i> Editar</button>
+								<button class="btn btn-sm btn-danger" type="button" id="delete"><i class="fa fa-trash-o fa-fw"></i> Eliminar</button>
+							</div>
+						</div>
+					</div>
+					<div class="row">
+						<div class="col-md-12">
+							<div id="jqxgrid" style="height: 550px; width: 100%;" ></div>
+						</div>
+					</div>
+				</div>
+				<br>
+				<!-- segunda grilla -->
+				<div class="tab-content">
+					 <div class="row">
+						<div class="col-md-12">
+							<?php // echo $this->flashSession->output(); ?>
+							<div id="divMsjeExito2" class="msjs-alert" hidden="hidden">
+								<button class="close" aria-hidden="true" data-dismiss="alert" type="button">×</button>
+								<h5>
+									<i class="fa fa-check-circle"></i>
+									<a class="alert-link" href="javascript:void(0)" id="aMsjeExito2"></a>
+								</h5>
+								
+							</div>
+						</div>
+					</div>
+					<br>
+					<div class="row">
+						<div class="col-md-12">
+							<div class="pull-left">
+								<h4>Contros por Cliente: <span id="text_cliente"></span></h4>
+							</div>
+							<div class="pull-right">
+								<button class="btn btn-sm btn-default" type="button" id="ver_productos"><i class="fa fa-pencil fa-fw"></i> Ver Productos</button>
+								<button class="btn btn-sm btn-warning" type="button" id="edit_contrato"><i class="fa fa-pencil fa-fw"></i> Editar</button>
+								<button class="btn btn-sm btn-danger" type="button" id="delete_contrato"><i class="fa fa-trash-o fa-fw"></i> Eliminar</button>
+							</div>
+						</div>
+					</div> 
+					<div class="row">
+						<div class="col-md-12">
+							<div id="jqxgrid_contratos" style="height: 550px; width: 100%;" ></div>
+						</div>
+					</div>
+				</div>
+			</div>
+		</div>
+	</div>
+</div>
+
+
+<!-- Modal -->
+<div class="modal fade bs-example-modal-lg" id="myModal" tabindex="-1" role="dialog" aria-labelledby="myLargeModalLabel" aria-hidden="true">
+	<div class="modal-dialog modal-lg">
+		<div class="modal-content">
+			<div class="modal-header">
+				<button type="button" class="close" data-dismiss="modal"><span aria-hidden="true">&times;</span><span class="sr-only">Close</span></button>
+				<h4 class="modal-title" id="titulo">Editar</h4>
+			</div>
+			<div class="modal-body">
+				<div class="row">
+					<div class="col-md-12">
+						<form action="" method="post" id="wizard" class="form-horizontal">
+							<input type="hidden" id="id" name="id" value="">
+							<fieldset title="Cliente">
+								<legend>Datos del Cliente y/o Empresa</legend>
+								<div class="row">
+									<div class="col-md-12">
+										<div class="form-group">
+											<label class="col-md-3 control-label">Razón Social<span class="text-danger">*</span>:</label>
+											<div class="col-md-9">
+												<input type="text" name="razon_social" id="razon_social" class="form-control" title="campo requerido" required>
+											</div>
+										</div>
+										<div class="form-group">
+											<label class="col-md-3 control-label">NIT<span class="text-danger">*</span>:</label>
+											<div class="col-md-9">
+												<input type="text" name="nit" id="nit" class="form-control" title="campo requerido" required>
+											</div>
+										</div>
+										<div class="form-group">
+											<label class="col-md-3 control-label">Telefono<span class="text-danger">*</span>:</label>
+											<div class="col-md-9">
+												<input type="number" name="telefono" id="telefono" class="form-control" title="campo requerido" required>
+											</div>
+										</div>
+										<div class="form-group">
+											<label class="col-md-3 control-label">Celular:</label>
+											<div class="col-md-9">
+												<input type="text" name="celular" id="celular" class="form-control" >
+											</div>
+										</div>
+										<div class="form-group" >
+											<label class="col-md-3 control-label">Correo Electronico<span class="text-danger">*</span>:</label>
+											<div class="col-md-9">
+												<input type="email" name="correo" id="correo" class="form-control" title="campo requerido" required>
+											</div>
+										</div>
+										<div class="form-group" >
+											<label class="col-md-3 control-label">Dirección<span class="text-danger">*</span>:</label>
+											<div class="col-md-9">
+												<input type="text" name="direccion" id="direccion" class="form-control" title="campo requerido" required>
+											</div>
+										</div>
+									</div> 
+								</div>
+							</fieldset>
+							<fieldset title="Representante Legal">
+								<legend>Datos del representatne legal</legend>
+								<div class="row">
+									<div class="col-md-12">
+										<div class="form-group" >
+											<label class="col-md-3 control-label">Nombre Completo</label>
+											<div class="col-md-9">
+												<input type="text" name="representante_legal" id="representante_legal" class="form-control">
+											</div>
+										</div>
+										<div class="form-group" >
+											<label class="col-md-3 control-label">C.I</label>
+											<div class="col-md-9">
+												<input type="text" name="ci_representante_legal" id="ci_representante_legal" class="form-control">
+											</div>
+										</div>
+										<div class="form-group" >
+											<label class="col-md-3 control-label">Celular:</label>
+											<div class="col-md-9">
+												<input type="number" name="celular_representante_legal" id="celular_representante_legal" class="form-control" >
+											</div>
+										</div>
+										<div class="form-group" >
+											<label class="col-md-3 control-label">Correo Electronico:</label>
+											<div class="col-md-9">
+												<input type="email" name="correo_representante_legal" id="correo_representante_legal" class="form-control" >
+											</div>
+										</div>
+									</div> 
+								</div>
+							</fieldset>
+							<fieldset title="Persona de Contacto">
+								<legend>Datos de una persona de contacto</legend>
+								<div class="row">
+									<div class="col-md-12">
+										<div class="form-group ">
+											<div class="form-group" >
+												<label class="col-md-3 control-label">Nombre Completo</label>
+												<div class="col-md-9">
+													<input type="text" name="nombre_ref" id="nombre_ref" class="form-control" >
+												</div>
+											</div>
+											<div class="form-group" >
+												<label class="col-md-3 control-label">C.I</label>
+												<div class="col-md-9">
+													<input type="text" name="ci_ref" id="ci_ref" class="form-control" >
+												</div>
+											</div>
+											<div class="form-group" >
+												<label class="col-md-3 control-label">Celular:</label>
+												<div class="col-md-9">
+													<input type="number" name="celular_ref" id="celular_ref" class="form-control" >
+												</div>
+											</div>
+											<div class="form-group" >
+												<label class="col-md-3 control-label">Correo Electronico:</label>
+												<div class="col-md-9">
+													<input type="email" name="correo_ref" id="correo_ref" class="form-control" >
+												</div>
+											</div>
+										</div> 
+									</div> 
+								</fieldset>
+								<input type="submit" name="submit" class="finish btn-success btn" title="Registrar persona" value="Registrar" />
+							</form>
+						</div>
+					</div>
+				</div>
+			</div>
+		</div>
+	</div>
+<!-- end  modal -->
+
+<!-- Modal Crear Contrato -->
+<!-- Modal -->
+<div class="modal fade" id="myModal_contrato" tabindex="-1" role="dialog" aria-labelledby="myModalLabel" aria-hidden="true">
+	<div class="modal-dialog">
+		<div class="modal-content">
+			<form class="form-horizontal" id="testForm_contrato" data-toggle="validator" action="" method="post" />
+			<input type="hidden" name="cliente_id" id="cliente_id">
+			<input type="hidden" name="contrato_id" id="contrato_id">
+			<div class="modal-header">
+				<button type="button" class="close" data-dismiss="modal"><span aria-hidden="true">&times;</span><span class="sr-only">Close</span></button>
+				<h4 class="modal-title" id="titulo_contrato">Editar</h4>
+			</div>
+			<div class="modal-body">
+				<div class="form-group">
+					<div class="col-md-12">
+						<h5 align="center"><?php echo $empresa->empresa ?></h5>
+						<input type="hidden" name="arrendador" id="arrendador" value="<?php echo $empresa->empresa ?>" >
+					</div>
+				</div>
+				<div class="form-group">
+					<label class="col-md-3 control-label">Representante Legal</label>
+					<div class="col-md-9">
+						<input type="text" name="arrendador_rep_legal" id="arrendador_rep_legal" value="<?php echo $empresa->representante_legal ?>" class="form-control" placeholder="" required readonly>
+					</div>
+				</div>
+				<div class="form-group">
+					<label class="col-md-3 control-label">Cargo</label>
+					<div class="col-md-9">
+						<input type="text" name="arrendador_cargo" id="arrendador_cargo" value="<?php echo $empresa->cargo ?>" class="form-control" placeholder="" required readonly>
+					</div>
+				</div>
+				<hr>
+				<div class="form-group">
+					<div class="col-md-12">
+						<h5 align="center">CLIENTE / EMPRESA</h5>
+					</div>
+				</div>
+				<div class="form-group">
+					<label class="col-md-3 control-label">Razón Social</label>
+					<div class="col-md-9">
+						<input type="text" name="rs" id="rs" class="form-control" placeholder="" readonly>
+					</div>
+				</div>
+				<div class="form-group">
+					<label class="col-md-3 control-label">Representante Legal</label>
+					<div class="col-md-9">
+						<input type="text" name="rl" id="rl" class="form-control" placeholder="" readonly>
+					</div>
+				</div>
+				<hr>
+				<div class="form-group">
+					<label class="col-md-3 control-label">Nro Contrato</label>
+					<div class="col-md-9">
+						<input type="text" name="contrato" id="contrato" class="form-control" placeholder="000/2015" required>
+					</div>
+				</div>
+				<div class="form-group" >
+					<label class="col-md-3 control-label">Descripción</label>
+					<div class="col-md-9">
+						<textarea name="descripcion" id="descripcion" class="form-control"></textarea>
+					</div>
+				</div>
+				<div class="form-group" >
+					<label class="col-md-3 control-label">Fecha Contrato</label>
+					<div class="col-md-9">
+						<input type="text" name="fecha_contrato" id="fecha_contrato" class="form-control" placeholder="dd-mm-yyyy" required>
+					</div>
+				</div>
+			</div>
+			<div class="modal-footer">
+				<button type="button" class="btn btn-default" data-dismiss="modal">Cerrar</button>
+				<button type="submit" class="btn btn-primary" id="Save">Guardar</button>
+			</div>
+		</form>
+	</div>
+</div>
+</div>
+<!-- end  modal -->
+
+<script>!window.jQuery && document.write(unescape('%3Cscript src="/assets/js/vendor/jquery-1.11.0.min.js"%3E%3C/script%3E'));</script>
+<script>$(function() { FormsValidation.init(); });</script>

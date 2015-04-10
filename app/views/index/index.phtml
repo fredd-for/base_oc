@@ -1,0 +1,150 @@
+<style>
+    div.node{border: 3px solid #ccc !important;}
+    a.personigrama{display: block !important;}
+</style>
+<div class="row">
+    <div class="col-sm-12">
+        <div class="panel">
+            <div class="panel-heading">
+                <h4>Página de Inicio</h4>
+                <div class="options">
+                    <ul class="nav nav-tabs">
+                        <li class="active"><a data-toggle="tab" href="#domshortcuttiles"><i class="fa fa-dashboard"></i></a></li>
+                        <li><a data-toggle="tab" href="#codeshortcuttiles"><i class="fa fa-code"></i></a></li>
+                    </ul>
+                </div>
+
+            </div>
+            <div class="panel-body">        
+                <div class="tab-content">
+                    <div id="domshortcuttiles" class="tab-pane active">
+                        <div class="row">
+                            <div class="col-md-2">
+                                <a class="shortcut-tiles tiles-info animated fadeInDownBig" href="/relaciones">
+                                    <div class="tiles-body">
+                                        <div class="pull-left"><i class="fa fa-users"></i></div>
+                                        <div class="pull-right"><span class="badge animated rubberBand">Clientes: <?php echo $personal ?></span></div>
+                                    </div>
+                                    <div class="tiles-footer">
+                                        Clientes con Contrato
+                                    </div>
+                                </a>
+                            </div>
+                            <div class="col-md-2">
+                                    <a class="shortcut-tiles tiles-indigo animated fadeInLeftBig" href="/cargos">
+                                    <div class="tiles-body">
+                                        <div class="pull-left"><i class="fa fa-glass"></i></div>
+                                        <div class="pull-right"><span class="badge animated rubberBand">Productos: <?php echo $acefalos ?></span></div>
+                                    </div>
+                                    <div class="tiles-footer">
+                                        Productos para Alquilar
+                                    </div>
+                                </a>
+                            </div>
+
+                            <div class="col-md-2">
+                                <a class="shortcut-tiles tiles-magenta animated fadeInRightBig" href="#">
+                                    <div class="tiles-body">
+                                        <div class="pull-left"><i class="fa fa-credit-card"></i></div>
+                                        <div class="pull-right"><span class="badge animated rubberBand">Contratos: <?php echo $procesos?></span></div>
+                                    </div>
+                                    <div class="tiles-footer">
+                                        Contratatos Activos
+                                    </div>
+                                </a>
+                            </div>
+                            <div class="col-md-2">
+                                <a class="shortcut-tiles tiles-danger animated fadeInDownBig" href="#">
+                                    <div class="tiles-body">
+                                        <div class="pull-left"><i class="fa fa-folder"></i></div>
+                                        <div class="pull-right"><span class="badge animated animated fadeInDownBig">Contratos</span></div>
+                                    </div>
+                                    <div class="tiles-footer">
+                                        Contratos Por Finalizar
+                                    </div>
+                                </a>
+                            </div>
+                            <div class="col-md-2">
+                                    <a class="shortcut-tiles tiles-orange animated fadeInLeftBig" href="#">
+                                    <div class="tiles-body">
+                                        <div class="pull-left"><i class="fa fa-archive"></i></div>
+                                        <div class="pull-right"><span class="badge animated ">Ganancia</span></div>
+                                    </div>
+                                    <div class="tiles-footer">
+                                        Ganancia Acumulada
+                                    </div>
+                                </a>
+                            </div>
+                            <div class="col-md-2">
+                                <a class="shortcut-tiles tiles-warning animated fadeInDownBig" href="/personas">
+                                    <div class="tiles-body">
+                                        <div class="pull-left"><i class="fa fa-user"></i></div>
+                                        <div class="pull-right"><span class="badge animated fadeInUpBig">Mora: <?php echo $personas?></span></div>
+                                    </div>
+                                    <div class="tiles-footer">
+                                        Numero de Contratos en Mora
+                                    </div>
+                                </a>
+                            </div>
+                        </div>
+
+                    </div>
+                    <div id="codeshortcuttiles" class="tab-pane">
+
+                    </div>
+                </div>
+            </div>
+        </div>
+
+    </div>
+</div>
+
+
+<div class="row">
+    <div class="col-sm-12 ">
+        <div id="basicdiagram" style="width: 100%; height: 580px; border-style: dotted; border-width: 1px;" />
+    </div>
+</div>
+
+
+<div class="row">
+    <div class="col-sm-12 ">
+        <div class="widget">
+            <div style="width: 100%;" ><?php echo $lista; ?></div>
+        </div>
+    </div>
+</div>
+<div class="row">
+    <div class="col-sm-12">
+        <div class="widget" style="overflow-x: auto; ">
+            <div id="chart" class="orgChart"></div>
+        </div>
+    </div>
+
+</div>
+<div class="row">
+    <div class="col-sm-12 ">
+        <div class="widget">
+            <div style="width: 100%;" id="lista_personal" ></div>
+        </div>
+    </div>
+</div>
+<div class="row">
+    <div id="modal-large" class="modal" tabindex="-1" role="dialog" aria-hidden="true"   >
+        <div class="modal-dialog modal-lg">
+            <form action="" method="post" >
+                <div class="modal-content">
+                    <div class="modal-header">
+                        <button type="button" class="close" data-dismiss="modal" aria-hidden="true">&times;</button>
+                        <h3 class="modal-title"></h3>
+                    </div>
+                    <div class="modal-body">                       
+                            <iframe src="" style="zoom:0.80" id="iframe1" frameborder="0" height="600px" width="850px">
+        
+                            </iframe>                                                                              
+                    </div>
+                </div>
+            </form>
+        </div>
+    </div>
+</div>
