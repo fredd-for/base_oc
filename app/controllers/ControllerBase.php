@@ -28,7 +28,7 @@ class ControllerBase extends Controller {
             $user_id = $auth['id'];
             $this->_user = usuarios::findFirst("id = '$user_id'");
             //Prepend the application name to the title
-            $this->tag->setTitle('Sistema de Comercialización');
+            $this->tag->setTitle('Sistema de Base OC');
             //menu
             $this->menu($this->_user->nivel);
             $this->view->setVar('user', $this->_user);
