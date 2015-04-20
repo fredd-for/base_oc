@@ -1,8 +1,6 @@
 
 $(document).ready(function (){
 
-cargar();	
-	function cargar(){	
 		var source =
 		{
 			datatype: "json",
@@ -18,7 +16,16 @@ cargar();
 			{ name: 'descripcion1',type:'string'},
 			],
 			url: '/bases/list/',
-			cache: false
+			root: 'Rows',
+			beforeprocessing: function (data) {
+				source.totalrecords = data[0].TotalRows;
+			},
+			sort: function () {
+				$("#jqxgrid").jqxGrid('updatebounddata', 'sort');
+			},
+			filter: function () {
+				$("#jqxgrid").jqxGrid('updatebounddata', 'filter');
+			}
 		};
 		var dataAdapter = new $.jqx.dataAdapter(source);
 
@@ -36,7 +43,10 @@ cargar();
             autorowheight: true,
             pageable: true,
             pagerMode: 'advanced',
-            // groupable: true,
+            virtualmode: true,
+            rendergridrows: function () {
+                    return dataAdapter.records;
+            },
 			columns: [
 			{
 				text: '#', sortable: false, filterable: false, editable: false,
@@ -47,18 +57,18 @@ cargar();
 				}
 			},
 			{ text: 'Código', datafield: 'codigo', filtertype: 'input',width: '10%' },
-			{ text: 'Ubicación', datafield: 'ubicacion', filtertype: 'filter',width: '10%' },
+			{ text: 'Ubicación', datafield: 'ubicacion', filtertype: 'input',width: '10%' },
 			{ text: 'Sector', datafield: 'sector', filtertype: 'input',width: '10%' },
 			{ text: 'Tipo', datafield: 'tipo', filtertype: 'input',width: '10%' },
 			{ text: 'Tipo1', datafield: 'tipo1', filtertype: 'input',width: '10%' },
-			{ text: 'Fecha', datafield: 'fecha', filtertype: 'range', width: '8%', cellsalign: 'center', cellsformat: 'dd-MM-yyyy', align:'center'},
+			{ text: 'Fecha', datafield: 'fecha', filtertype: 'range', width: '8%', cellsalign: 'center', cellsformat: 'yyyy-MM-dd', align:'center'},
 			{ text: 'Descripción', datafield: 'descripcion', filtertype: 'input', width: '20%'},
 			{ text: 'Concatenación ', datafield: 'descripcion1', filtertype: 'input', width: '20%'},
 	        ]
 	});
 
  		//$("#jqxgrid").jqxGrid('expandgroup',4);
-}
+
 
 
 /*
