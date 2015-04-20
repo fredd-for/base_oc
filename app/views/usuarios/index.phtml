@@ -1,0 +1,126 @@
+<div class="row">
+	<div class="col-sm-12">
+		<div class="panel">
+			<div class="panel-heading">
+				<h4>Lista de Usuarios</h4>
+				<div class="options">
+                    <ul class="nav nav-tabs">
+                        <li class="active"><a data-toggle="tab" href="#domshortcuttiles"><i class="fa fa-users"></i></a></li>
+                        <li><a data-toggle="tab" href="#codeshortcuttiles"><i class="fa fa-code"></i></a></li>
+                    </ul>
+                </div>
+			</div>
+			<div class="panel-body">
+				<div class="tab-content">
+					<div class="row">
+						<div class="col-md-12">
+							<?php  echo $this->flashSession->output(); ?>
+							<div id="divMsjeExito" class="msjs-alert" hidden="hidden">
+								<button class="close" aria-hidden="true" data-dismiss="alert" type="button">×</button>
+								<h5>
+									<i class="fa fa-check-circle"></i>
+									<!-- &Eacute;xito! -->
+									<a class="alert-link" href="javascript:void(0)" id="aMsjeExito"></a>
+								</h5>
+								
+							</div>
+						</div>
+					</div>
+					<div class="row">
+						<div class="col-md-12">
+							<div class="pull-left">
+                                <button class="btn btn-sm btn-primary" type="button" id="add"><i class="fa fa-plus fa-fw"></i>Adicionar</button>
+                                <button class="btn btn-sm btn-warning" type="button" id="edit"><i class="fa fa-pencil fa-fw"></i> Editar</button>
+                				<button class="btn btn-sm btn-danger" type="button" id="delete"><i class="fa fa-trash-o fa-fw"></i> Eliminar</button>
+							</div>
+						</div>
+					</div>
+					<div class="row">
+						<div class="col-md-12">
+							<div id="jqxgrid" style="height: 550px; width: 100%;" ></div>
+						</div>
+					</div>
+				</div>
+			</div>
+		</div>
+	</div>
+</div>
+
+<!-- Modal -->
+<div class="modal fade" id="myModal" tabindex="-1" role="dialog" aria-labelledby="myModalLabel" aria-hidden="true">
+	<div class="modal-dialog">
+		<div class="modal-content">
+			<form class="form-horizontal" id="testForm" data-toggle="validator"/>
+			<div class="modal-header">
+				<button type="button" class="close" data-dismiss="modal"><span aria-hidden="true">&times;</span><span class="sr-only">Close</span></button>
+				<h4 class="modal-title" id="titulo">Editar</h4>
+			</div>
+			<div class="modal-body">
+				<input id="id" name="id" type="hidden" />
+				<div class="form-group">
+					<label class="col-md-3 control-label">Permiso:</label>
+					<div class="col-md-9">
+						<?php echo $nivel ?>
+					</div>
+				</div>
+				<div class="form-group">
+					<label class="col-md-3 control-label">Nombre(s):</label>
+					<div class="col-md-9">
+						<input type="text" name="nombre" id="nombre" class="form-control" required>
+					</div>
+				</div>
+				<div class="form-group" >
+					<label class="col-md-3 control-label">Apellido Paterno</label>
+					<div class="col-md-9">
+						<input type="text" name="paterno" id="paterno" class="form-control">
+					</div>
+				</div>
+				<div class="form-group" >
+					<label class="col-md-3 control-label">Materno</label>
+					<div class="col-md-9">
+						<input type="text" name="materno" id="materno" class="form-control">
+					</div>
+				</div>
+				<div class="form-group" >
+					<label class="col-md-3 control-label">Cedula Identidad</label>
+					<div class="col-md-5">
+						<input type="number" name="cedula_identidad" id="cedula_identidad" class="form-control" >
+					</div>
+					<div class="col-md-4">
+						<?php echo $expedido ?>
+					</div>
+				</div>
+				<div class="form-group" >
+					<label class="col-md-3 control-label">Correo Electronico</label>
+					<div class="col-md-9">
+						<input type="email" name="email" id="email" class="form-control" >
+					</div>
+				</div>
+				<div class="form-group" >
+					<label class="col-md-3 control-label">Telefono</label>
+					<div class="col-md-9">
+						<input type="number" name="telefono" id="telefono" class="form-control"  title="campo obligatorio">
+					</div>
+				</div>
+				<div class="form-group" >
+					<label class="col-md-3 control-label">Celular</label>
+					<div class="col-md-9">
+						<input type="number" name="celular" id="celular" class="form-control"  title="campo obligatorio">
+					</div>
+				</div>
+				<div class="form-group" >
+					<label class="col-md-3 control-label">Estado</label>
+					<div class="col-md-9">
+						<?php echo $estado ?>
+					</div>
+				</div>
+			</div>
+			<div class="modal-footer">
+				<button type="button" class="btn btn-default" data-dismiss="modal">Cerrar</button>
+				<button type="submit" class="btn btn-primary" id="Save">Guardar</button>
+			</div>
+		</form>
+	</div>
+</div>
+</div>
+<!-- end  modal -->

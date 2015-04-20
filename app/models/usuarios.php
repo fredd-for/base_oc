@@ -18,16 +18,6 @@ class Usuarios extends \Phalcon\Mvc\Model {
         return new Resultset(null, $users, $users->getReadConnection()->query($sql));
     }
 
-    public function pendientesOficina($id) {
-        $sql = "SELECT 	count(*) as pendientes,u.nombre
-                FROM seguimiento s INNER JOIN usuarios u  ON s.derivado_a=u.id
-                WHERE s.id_a_oficina='$id' 
-                AND s.estado ='2'
-                AND u.habilitado='1'
-                GROUP BY u.nombre";
-        return new Resultset(null, $this->_db, $this->_db->getReadConnection()->query($sql));
-    }
-
     //administracion
     public function listaUsuarios($id) {
 
