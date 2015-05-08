@@ -17,8 +17,8 @@ class LoginController extends \Phalcon\Mvc\Controller {
             $password = hash_hmac('sha256', $password, '2, 4, 6, 7, 9, 15, 20, 23, 25, 30');                           
             $user = usuarios::findFirst(
                             array(
-                                "username = :usuario: AND password = :password: AND habilitado= :estado:",
-                                "bind" => array('usuario' => $usuario, 'password' => $password, 'estado' => 1)
+                                "username = :usuario: AND password = :password: AND habilitado= :estado: AND baja_logica= :bl:",
+                                "bind" => array('usuario' => $usuario, 'password' => $password, 'estado' => 1, 'bl'=>1)
             ));
             if ($user != false) {         
                 $user->logins = $user->logins + 1;
@@ -27,8 +27,10 @@ class LoginController extends \Phalcon\Mvc\Controller {
                 $this->_registerSession($user);
                 $this->flashSession->success('Bienvenido <i>' . $user->nombre . '</i>');
                 $this->response->redirect('/');
+            }else{
+                $this->flashSession->error('<b>Acceso denegado!</b> Usuario/contraseña incorrectos');    
             }
-            $this->flashSession->error('<b>Acceso denegado!</b> Usuario/contraseña incorrectos');
+            
         }     
     }
 

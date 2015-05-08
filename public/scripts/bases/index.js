@@ -1,6 +1,7 @@
 
 $(document).ready(function (){
-
+	cargar();
+	function cargar() {
 		var source =
 		{
 			datatype: "json",
@@ -61,12 +62,14 @@ $(document).ready(function (){
 			{ text: 'Sector', datafield: 'sector', filtertype: 'input',width: '10%' },
 			{ text: 'Tipo', datafield: 'tipo', filtertype: 'input',width: '10%' },
 			{ text: 'Tipo1', datafield: 'tipo1', filtertype: 'input',width: '10%' },
-			{ text: 'Fecha', datafield: 'fecha', filtertype: 'range', width: '8%', cellsalign: 'center', cellsformat: 'yyyy-MM-dd', align:'center'},
+			{ text: 'Fecha', datafield: 'fecha', filtertype: 'range', width: '8%', cellsalign: 'center', cellsformat: 'dd-MM-yyyy', align:'center'},
 			{ text: 'Descripción', datafield: 'descripcion', filtertype: 'input', width: '20%'},
 			{ text: 'Concatenación ', datafield: 'descripcion1', filtertype: 'input', width: '20%'},
 	        ]
 	});
 
+	}
+		
  		//$("#jqxgrid").jqxGrid('expandgroup',4);
 
 
@@ -78,6 +81,14 @@ $("#cargar_csv").click(function(){
 	$("#titulo").text("Cargar Archivo CSV");
 	// $("#id").val("");
 	$('#myModal').modal('show');
+});
+
+
+/*
+Eliminar registros 
+*/
+$("#delete").click(function(){
+	$('#myModal_delete').modal('show');
 });
 
 /*
@@ -110,41 +121,26 @@ $("#edit").click(function() {
 
 });
 
-/*
-Eliminar
-*/
-$("#delete").click(function() {
-	var rowindex = $('#jqxgrid').jqxGrid('getselectedrowindex');
-	if (rowindex > -1)
-	{
-		var dataRecord = $("#jqxgrid").jqxGrid('getrowdata', rowindex);
- 		//$("#id").val(dataRecord.id);
- 		bootbox.confirm("<strong>¡Mensaje!</strong> Esta seguro de eliminar el registro.", function(result) {
- 			if (result == true) {
- 				var v = $.ajax({
- 					url: '/productos/delete/',
- 					type: 'POST',
- 					datatype: 'json',
- 					data: {id: dataRecord.id},
- 					success: function(data) {
-                            cargar(); //alert('Guardado Correctamente'); 
-                            $("#divMsjeExito").show();
-                            $("#divMsjeExito").addClass('alert alert-warning alert-dismissable');
-                            $("#aMsjeExito").html(data); 
+$("#testForm_delete").submit(function(){
+var v=$.ajax({
+   url:'/bases/delete/',
+   type:'POST',
+   datatype: 'json',
+   data:{fecha_inicio:$("#fecha_inicio").val(),fecha_fin:$("#fecha_fin").val()},
+   success: function(data) { alert(data); cargar();
                         }, //mostramos el error
-                        error: function() {
-                        	alert('Se ha producido un error Inesperado');
-                        }
-                    });
- 			}
- 		});
- 	}
- 	else
- 	{
- 		bootbox.alert("<strong>¡Mensaje!</strong> Seleccionar un registro para eliminar.");
- 	}
+                        error: function() { alert('Se ha producido un error Inesperado'); }
+                      });
 
- });
+   $('#myModal_delete').modal('hide');
+   return false; // ajax used, block the normal submit
+ 
+});
+
+
+$("#fecha_inicio, #fecha_fin").datepicker({
+						autoclose:true,
+	});
 
 
 })

@@ -11,20 +11,20 @@ cargar();
 			{ name: 'username',type: 'string'},
 			{ name: 'password',type: 'string'},
 			{ name: 'nombre',type: 'string'},
-			{ name: 'mosca',type: 'string'},
-			{ name: 'cargo',type: 'string'},
+			{ name: 'paterno',type:'string'},
+			{ name: 'materno',type:'string'},
+			{ name: 'nombre_completo',type: 'string'},
 			{ name: 'email',type: 'string'},
 			{ name: 'fecha_creacion',type: 'date'},
 			{ name: 'nivel',type:'number'},
 			{ name: 'cedula_identidad',type:'number'},
 			{ name: 'expedido',type:'string'},
-			{ name: 'paterno',type:'string'},
-			{ name: 'materno',type:'string'},
-			{ name: 'nombre_completo',type:'string'},
 			{ name: 'ci_texto',type:'string'},
 			{ name: 'telefono',type:'number'},
 			{ name: 'celular',type:'number'},
-			{ name: 'habilitado'},
+			{ name: 'direccion',type:'string'},
+			{ name: 'habilitado',type:'number'},
+			{ name: 'habilitado_text',type:'string'},
 			],
 			url: '/usuarios/list/',
 			cache: false
@@ -55,15 +55,14 @@ cargar();
 					return "<div style='margin:4px;'>" + (value + 1) + "</div>";
 				}
 			},
-			{ text: 'Nombre Completo', datafield: 'nombre_completo', filtertype: 'filter',width: '15%' },
+			{ text: 'Nombre Completo', datafield: 'nombre_completo', filtertype: 'filter',width: '17%' },
 			{ text: 'Cedula Identidad', datafield: 'ci_texto', filtertype: 'input',width: '8%' },
-			{ text: 'Correo Electronico', datafield: 'email', filtertype: 'input',width: '15%' },
-			{ text: 'Ocupación', datafield: 'cargo', filtertype: 'input',width: '15%' },
+			{ text: 'Correo Electronico', datafield: 'email', filtertype: 'input',width: '17%' },
 			{ text: 'Usuario', datafield: 'username', filtertype: 'input',width: '10%' },
-			{ text: 'Fecha Creación', datafield: 'fecha_creacion', filtertype: 'range', width: '8%', cellsalign: 'center', cellsformat: 'dd-MM-yyyy', align:'center'},
 			{ text: 'Telefono', datafield: 'telefono', filtertype: 'number', width: '10%',cellsalign: 'right'},
 			{ text: 'Celular', datafield: 'celular', filtertype: 'number', width: '10%',cellsalign: 'right'},
-			{ text: 'Estado', datafield: 'habilitado', filtertype: 'number', width: '5%',cellsalign: 'right'},
+			{ text: 'Dirección', datafield: 'direccion', filtertype: 'number', width: '15%',cellsalign: 'right'},
+			{ text: 'Estado', datafield: 'habilitado_text', filtertype: 'number', width: '10%',cellsalign: 'right'},
 	        ]
 	});
 
@@ -77,7 +76,21 @@ adicionar
 $("#add").click(function(){
 	$("#titulo").text("Adicionar Usuario");
 	$("#id").val("");
+	$("#nivel").val("");
+	$("#nombre").val("");
+	$("#paterno").val("");
+	$("#materno").val("");
+	$("#cedula_identidad").val("");
+	$("#expedido").val("");
+	$("#email").val("");
+	$("#telefono").val("");
+	$("#celular").val("");
+	$("#habilitado").val("");
+	$("#direccion").val("");
+	$("#habilitado").val("");
+	$(".ocultar").show();
 	$('#myModal').modal('show');
+
 });
 
 /*
@@ -89,19 +102,23 @@ $("#edit").click(function() {
 	if (rowindex > -1)
 	{
 		var dataRecord = $("#jqxgrid").jqxGrid('getrowdata', rowindex);
+		$("#titulo").text("Editar Usuario");
+		$(".ocultar").hide();
 		$("#id").val(dataRecord.id);
-		$("#titulo").text("Editar Producto");
-
-		$("#grupo_id").val(dataRecord.grupo_id);
-		$("#linea_id").val(dataRecord.linea_id);
-		$("#producto").val(dataRecord.producto);
-		$("#codigo").val(dataRecord.codigo);
-		$("#descripcion").val(dataRecord.descripcion);
-		$("#precio_unitario").val(dataRecord.precio_unitario);
-		$("#cantidad").val(dataRecord.cantidad);
-		$("#tiempo").val(dataRecord.tiempo);
-		select_estacion(dataRecord.linea_id,dataRecord.estacion_id);
+		$("#nivel").val(dataRecord.nivel);
+		$("#nombre").val(dataRecord.nombre);
+		$("#paterno").val(dataRecord.paterno);
+		$("#materno").val(dataRecord.materno);
+		$("#cedula_identidad").val(dataRecord.cedula_identidad);
+		$("#expedido").val(dataRecord.expedido);
+		$("#email").val(dataRecord.email);
+		$("#telefono").val(dataRecord.telefono);
+		$("#celular").val(dataRecord.celular);
+		$("#habilitado").val(dataRecord.habilitado);
+		$("#direccion").val(dataRecord.direccion);
+		$("#habilitado").val(dataRecord.habilitado);
 		$('#myModal').modal('show');
+		// alert(dataRecord.habilitado);
 	}
 	else
 	{
@@ -145,6 +162,27 @@ $("#delete").click(function() {
  	}
 
  });
+
+/*
+guardar 
+ */
+$("#testForm").submit(function() {
+	//alert($("#habilitado").val());
+	var v=$.ajax({
+            	url:'/usuarios/save/',
+            	type:'POST',
+            	datatype: 'json',
+            	data:{id:$("#id").val(),nombre:$("#nombre").val(),paterno:$("#paterno").val(),materno:$("#materno").val(),cedula_identidad:$("#cedula_identidad").val(),expedido:$("#expedido").val(),email:$("#email").val(),telefono:$("#telefono").val(),celular:$("#celular").val(),direccion:$("#direccion").val(),habilitado:$("#habilitado").val(),username:$("#username").val(),password:$("#password").val(),nivel:$("#nivel").val()},
+				success: function(data) { cargar(); 
+					$("#divMsjeExito").show();
+                    $("#divMsjeExito").addClass('alert alert-info alert-dismissable');
+                    $("#aMsjeExito").html(data); 
+				}, //mostramos el error
+			error: function() { alert('Se ha producido un error Inesperado'); }
+			});
+            $('#myModal').modal('hide');
+            return false; // ajax used, block the normal submit
+});
 
 
 })

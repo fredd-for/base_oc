@@ -51,12 +51,12 @@
 	<div class="modal-dialog">
 		<div class="modal-content">
 			<form class="form-horizontal" id="testForm" data-toggle="validator"/>
+			<input type="hidden" name="id" id="id" >
 			<div class="modal-header">
 				<button type="button" class="close" data-dismiss="modal"><span aria-hidden="true">&times;</span><span class="sr-only">Close</span></button>
 				<h4 class="modal-title" id="titulo">Editar</h4>
 			</div>
 			<div class="modal-body">
-				<input id="id" name="id" type="hidden" />
 				<div class="form-group">
 					<label class="col-md-3 control-label">Permiso:</label>
 					<div class="col-md-9">
@@ -109,9 +109,28 @@
 					</div>
 				</div>
 				<div class="form-group" >
+					<label class="col-md-3 control-label">Dirección</label>
+					<div class="col-md-9">
+						<input type="text" name="direccion" id="direccion" class="form-control"  title="">
+					</div>
+				</div>
+				<div class="form-group" >
 					<label class="col-md-3 control-label">Estado</label>
 					<div class="col-md-9">
 						<?php echo $estado ?>
+					</div>
+				</div>
+				<hr>
+				<div class="form-group ocultar" >
+					<label class="col-md-3 control-label">Usuario</label>
+					<div class="col-md-9">
+						<input type="text" name="username" id="username" class="form-control" required title="">
+					</div>
+				</div>
+				<div class="form-group ocultar" >
+					<label class="col-md-3 control-label">Contraseña</label>
+					<div class="col-md-9">
+						<input type="password" name="password" id="password" class="form-control" required title="">
 					</div>
 				</div>
 			</div>
@@ -124,3 +143,4 @@
 </div>
 </div>
 <!-- end  modal -->
+

@@ -28,20 +28,8 @@
 					</div>
 					<div class="row">
 						<div class="col-md-12">
-							<div class="col-xs-3">
-								<input type="text" name="fecha_inicio" id="fecha_inicio" class="form-control" required>
-							</div>
-							<div class="col-xs-1">
-								a
-							</div>
-							<div class="col-xs-3">
-								<input type="text" name="fecha_fin" id="fecha_fin" class="form-control" required>
-							</div>
-							<div class="col-xs-1">
-
-							</div>
 							<div class="col-xs-4 pull-left">
-								<button class="btn btn-sm btn-primary" type="button" id="add"><i class="fa fa-plus fa-fw"></i>Consulta</button>
+								<!-- <button class="btn btn-sm btn-primary" type="button" id="add"><i class="fa fa-plus fa-fw"></i>Consulta</button> -->
 								<button class="btn btn-sm btn-warning" type="button" id="cargar_csv"><i class="fa fa-pencil fa-fw"></i> Cargar CSV</button>
 								<button class="btn btn-sm btn-danger" type="button" id="delete"><i class="fa fa-trash-o fa-fw"></i> Eliminar</button>
 							</div>
@@ -85,3 +73,39 @@
 </div>
 </div>
 <!-- end  modal -->
+
+<!-- Modal adicionar plan de pagos -->
+<div class="modal fade" id="myModal_delete" tabindex="-1" role="dialog" aria-labelledby="myModalLabel" aria-hidden="true">
+	<div class="modal-dialog">
+		<div class="modal-content">
+		<form class="form-horizontal" id="testForm_delete" data-toggle="validator" />
+			<div class="modal-header">
+				<button type="button" class="close" data-dismiss="modal"><span aria-hidden="true">&times;</span><span class="sr-only">Close</span></button>
+				<h4 class="modal-title" id="titulo">Eliminar Registros</h4>
+			</div>
+			<div class="modal-body">
+				<div class="form-group" >
+					<label class="col-md-2 control-label">Fecha Inicio</label>
+					<div class="col-md-4">
+						<input type="text" id="fecha_inicio" name="fecha_inicio" value="" class="form-control input-datepicker-close" data-date-format="dd-mm-yyyy" placeholder="dd-mm-yyyy" required/>
+					</div>
+					<label class="col-md-2 control-label">Fecha Final</label>
+					<div class="col-md-4">
+						<input type="text" id="fecha_fin" name="fecha_fin" value="" class="form-control input-datepicker-close" data-date-format="dd-mm-yyyy" placeholder="dd-mm-yyyy" required/>
+					</div>
+				</div>
+			</div>
+			<div class="modal-footer">
+				<button type="button" class="btn btn-default" data-dismiss="modal">Cerrar</button>
+				<button type="submit" class="btn btn-primary" id="Save">Eliminar</button>
+			</div>
+		</form>
+	</div>
+</div>
+</div>
+<!-- end  modal -->
+<style type="text/css">
+	.datepicker{
+		z-index:1151;
+	}
+</style>

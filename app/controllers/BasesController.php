@@ -142,7 +142,7 @@ class BasesController extends ControllerRrhh {
                 'sector'=>$v->sector,
                 'tipo'=>$v->tipo,
                 'tipo1'=>$v->tipo1,
-                'fecha'=>$v->fecha,
+                'fecha'=>$v->fecha.' 00:00:00',
                 'descripcion'=>$v->descripcion,
                 'descripcion1'=> $v->descripcion1,
                 'fecha_registro'=>$v->fecha_registro,
@@ -173,8 +173,8 @@ class BasesController extends ControllerRrhh {
             $destino = "files/" . $prefijo . "_" . $archivo;
             if (copy($_FILES['archivo']['tmp_name'], $destino)) {
                 $fp = fopen($destino, "r");
-                $data = fgetcsv($fp,2048, ",");  //eliminamos la primera linea
-                while(($data = fgetcsv($fp,2048, ","))!==false){
+                $data = fgetcsv($fp,2048, ";");  //eliminamos la primera linea
+                while(($data = fgetcsv($fp,2048, ";"))!==false){
                  $msm =$data[0]." ".$data[1]." ".$data[2]." ".$data[3]." ".$data[4]." ".$data[5]." ".$data[6]."<br>";   
                  $resul = new Bases();
                  $resul->codigo= $data[0];
@@ -199,5 +199,203 @@ class BasesController extends ControllerRrhh {
     }
 }
 
+    public function listafiltroAction($fecha_inicio,$fecha_fin,$ubicacion,$sector,$tipo,$caracteristica1,$caracteristica2,$caracteristica3,$caracteristica4,$caracteristica5)
+    {
+         //echo "caracteristica1=>".$caracteristica1;
+        $where = '';
+        $where_or = '';
+        if ($fecha_inicio!='') {
+            $fecha_inicio = date("Y-m-d",strtotime($fecha_inicio));
+            $fecha_fin = date("Y-m-d",strtotime($fecha_fin));
+            $where.= " AND fecha BETWEEN '$fecha_inicio' AND '$fecha_fin' ";
+        }
+        if ($ubicacion!='0') {
+            $where.= " AND ubicacion='$ubicacion' ";   
+        }
+        if ($sector!='0') {
+            $where.= " AND sector='$sector' ";   
+        }
+        if ($tipo!='0') {
+            $where.= " AND tipo='$tipo' ";   
+        }
+        if ($caracteristica1!='0') {
+            $where.= " AND descripcion1 LIKE '%".$caracteristica1."%'";
+        }
+        if ($caracteristica2!='0') {
+            $where.= " AND descripcion1 LIKE '%".$caracteristica2."%'";
+        }
+        if ($caracteristica3!='0') {
+            $where.= " AND descripcion1 LIKE '%".$caracteristica3."%'";
+        }
+        if ($caracteristica4!='0') {
+            $where.= " AND descripcion1 LIKE '%".$caracteristica4."%'";
+        }
+        if ($caracteristica5!='0') {
+            $where.= " AND descripcion1 LIKE '%".$caracteristica5."%'";
+        }
+
+
+        // if ($caracteristica1!='0') {
+        //     $where_or.= " OR descripcion LIKE '%".$caracteristica1."%'";
+        // }
+        // if ($caracteristica2!='0') {
+        //     $where_or.= " OR descripcion LIKE '%$caracteristica2%'";
+        // }
+        // if ($caracteristica3!='0') {
+        //     $where_or.= " OR descripcion LIKE '%$caracteristica3%'";
+        // }
+        // if ($caracteristica4!='0') {
+        //     $where_or.= " OR descripcion LIKE '%$caracteristica4%'";
+        // }
+        // if ($caracteristica5!='0') {
+        //     $where_or.= " OR descripcion LIKE '%$caracteristica5%'";
+        // }
+        // //echo "where or =>".$where_or;
+        // if(strlen($where_or)>0){
+        //     $where_or = substr($where_or, 4);
+        //     $where_or = " AND ( ".$where_or." )";
+        // }
+        
+
+         $sql= "SELECT v.*, b.* FROM
+(SELECT codigo as cod, COUNT(codigo) as cantidad, MIN(fecha) as fecha_min,MAX(fecha) as  fecha_max
+FROM bases 
+GROUP BY codigo) as v , bases b 
+WHERE v.cod = b.codigo ".$where.$where_or."
+ORDER BY v.cantidad DESC";
+        //echo "where =>".$sql;
+        $pagenum = $_GET['pagenum'];
+        $pagesize = $_GET['pagesize'];
+        $start = $pagenum * $pagesize;
+        $query = "SELECT * FROM (".$sql.") as v ";
+
+        if (isset($_GET['filterscount']))
+        {
+            $filterscount = $_GET['filterscount'];
+            if ($filterscount > 0)
+            {
+                $where = " WHERE (";
+                $tmpdatafield = "";
+                $tmpfilteroperator = "";
+
+                for ($i=0; $i < $filterscount; $i++)
+                {
+                // get the filter's value.
+                    $filtervalue = $_GET["filtervalue" . $i];
+                // get the filter's condition.
+                    $filtercondition = $_GET["filtercondition" . $i];
+                // get the filter's column.
+                    $filterdatafield = $_GET["filterdatafield" . $i];
+                // get the filter's operator.
+                    $filteroperator = $_GET["filteroperator" . $i];
+
+                    if ($tmpdatafield == ""){
+                        $tmpdatafield = $filterdatafield;
+                    }else if($tmpdatafield <> $filterdatafield){ 
+                        $where .= ")AND(";
+                    }else if ($tmpdatafield == $filterdatafield){
+                        if ($tmpfilteroperator == 0){ 
+                            $where .= " AND ";
+                        }else { 
+                            $where .= " OR ";
+                        }                   
+                    }
+                    switch($filtercondition){
+                        case "CONTAINS":$where .= " " . $filterdatafield . " LIKE '%" . $filtervalue ."%'";
+                        break;
+                        case "DOES_NOT_CONTAIN":$where .= " " . $filterdatafield . " NOT LIKE '%" . $filtervalue ."%'";
+                        break;
+                        case "EQUAL": $where .= " " . $filterdatafield . " = '" . $filtervalue ."'";
+                        break; 
+                        case "NOT_EQUAL":$where .= " " . $filterdatafield . " <> '" . $filtervalue ."'";
+                        break;
+                        case "GREATER_THAN": $where .= " " . $filterdatafield . " > '" . $filtervalue ."'";
+                        break; 
+                        case "LESS_THAN": $where .= " " . $filterdatafield . " < '" . $filtervalue ."'";
+                        break;
+                        case "GREATER_THAN_OR_EQUAL":$where .= " " . $filterdatafield . " >= '" . $filtervalue ."'";
+                        break;
+                        case "LESS_THAN_OR_EQUAL": $where .= " " . $filterdatafield . " <= '" . $filtervalue ."'";
+                        break;
+                        case "STARTS_WITH": $where .= " " . $filterdatafield . " LIKE '" . $filtervalue ."%'";
+                        break;
+                        case "ENDS_WITH": $where .= " " . $filterdatafield . " LIKE '%" . $filtervalue ."'";
+                        break;
+                    }
+                    if ($i == $filterscount - 1){
+                        $where .= ")";
+                        }
+                    $tmpfilteroperator = $filteroperator;
+                    $tmpdatafield = $filterdatafield;
+                    }
+
+                    $query = $query . $where;
+                }
+            }
+
+        /*
+        ordenamos
+         */ 
+        if (isset($_GET['sortdatafield']))
+        {
+            $sortfield = $_GET['sortdatafield'];
+            $sortorder = $_GET['sortorder'];
+            if ($sortfield != NULL)
+            {
+                $query = $query." ORDER BY" . " " . $sortfield . " ".$sortorder;
+            }
+            
+        }
+        
+        $model = new Bases();
+        $resul = $model->serverlista($query);
+        $total_rows = count($resul);
+
+        $query=$query." LIMIT $start, $pagesize ";
+        $model = new Bases();
+        $resul = $model->serverlista($query);
+         // $customers[] = array();
+       $this->view->disable();
+        foreach ($resul as $v) {
+            // echo 'cantidad =>'.$v->cantidad;
+            $customers[] = array(
+                'id'=>$v->id,
+                'cantidad'=>$v->cantidad,
+                'fecha_min'=>$v->fecha_min.' 00:00:00',
+                'fecha_max'=>$v->fecha_max.' 00:00:00',
+                'codigo'=>$v->codigo,
+                'ubicacion'=>$v->ubicacion,
+                'sector'=>$v->sector,
+                'fecha'=>$v->fecha.' 00:00:00',
+                'tipo'=>$v->tipo,
+                'tipo1'=>$v->tipo1,
+                'descripcion'=>$v->descripcion,
+                'descripcion1'=> $v->descripcion1,
+                'fecha_registro'=>$v->fecha_registro,
+                'usuario_registro'=>$v->usuario_registro,
+                );
+        }
+        $data[] = array('TotalRows' => $total_rows,'Rows' => $customers);
+        echo json_encode($data);
+        
+
+    }
+
+
+     public function deleteAction(){
+        $model = new Bases();
+
+        $fecha_inicio = date("Y-m-d",strtotime($_POST['fecha_inicio']));
+        $fecha_fin = date("Y-m-d",strtotime($_POST['fecha_fin']));
+        $resul =$model->deletereg($fecha_inicio,$fecha_fin);
+        // if ($resul->save()) {
+        //             $msm ='Exito: Se elimino correctamente';
+        //         }else{
+        //             $msm = 'Error: No se guardo el registro';
+        //         }
+        $msm ='Exito: Se elimino correctamente';
+        $this->view->disable();
+        echo $msm;
+    }
 
 }

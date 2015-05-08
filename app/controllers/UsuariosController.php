@@ -80,10 +80,10 @@ class UsuariosController extends ControllerRrhh {
 
          $estado = $this->tag->selectStatic(
         array(
-            "nivel",
+            "habilitado",
             array(
-                "true" => "Habilitado",
-                "false"   => "Desabilitado",
+                "1" => "Habilitado",
+                "0"   => "Desabilitado",
                 ),
             'useEmpty' => false,
             'emptyText' => '(Selecionar)',
@@ -99,6 +99,7 @@ class UsuariosController extends ControllerRrhh {
 
     public function listAction()
     {   $this->view->disable();
+        $estado = array('Desabilitado','Habilitado');
         $resul = Usuarios::find(array('baja_logica=1','order'=>'paterno ASC'));
         foreach ($resul as $v) {
             $customers[] = array(
@@ -117,15 +118,94 @@ class UsuariosController extends ControllerRrhh {
                 'materno'=>$v->materno,
                 'nombre_completo'=>$v->paterno.' '.$v->materno.' '.$v->nombre,
                 'ci_texto'=>$v->cedula_identidad.' '.$v->expedido,
+                'direccion'=>$v->direccion,
                 'telefono'=>$v->telefono,
                 'celular'=>$v->celular,
-                'habilitado' =>$v->habilitado
+                'habilitado_text' =>$estado[$v->habilitado],
+                'habilitado' =>$v->habilitado,
                 );
         }
         echo json_encode($customers);
         
     }
 
+    public function saveAction()
+    {
+        if (isset($_POST['id'])) {
+            if ($_POST['id']>0) {
+                $resul = Usuarios::findFirstById($this->request->getPost('id'));
+                //$resul->username= $this->request->getPost('username');
+                //$resul->password = $this->request->getPost('password');
+                $resul->nombre = $this->request->getPost('nombre');
+                $resul->cargo = $this->request->getPost('cargo');
+                $resul->email = $this->request->getPost('email');
+                $resul->habilitado = $this->request->getPost('habilitado');
+                $resul->nivel = $this->request->getPost('nivel');
+                $resul->cedula_identidad = $this->request->getPost('cedula_identidad');
+                $resul->expedido = $this->request->getPost('expedido');
+                $resul->direccion = $this->request->getPost('direccion');
+                $resul->paterno = $this->request->getPost('paterno');
+                $resul->materno = $this->request->getPost('materno');
+                $resul->telefono = $this->request->getPost('telefono');
+                $resul->celular = $this->request->getPost('celular');
+                if ($resul->save()) {
+                    $msm ='Exito: Se guardo correctamente';
+                }else{
+                    $msm = 'Error: No se guardo el registro';
+                }
+            }
+            else{
+                $resul = new Usuarios();
+                $resul->username= $this->request->getPost('username');
+                $resul->superior = 0;
+                $resul->oficina_id = 1;
+                $resul->dependencia = 1;
+                $resul->password = hash_hmac('sha256', $this->request->getPost('password'), '2, 4, 6, 7, 9, 15, 20, 23, 25, 30');
+                $resul->nombre = $this->request->getPost('nombre');
+                $resul->mosca = '';
+                $resul->cargo = '';
+                $resul->email = $this->request->getPost('email');
+                $resul->logins = 0;
+                $resul->fecha_creacion = date("Y-m-d H:i:s");
+                $resul->habilitado = $this->request->getPost('habilitado');
+                $resul->nivel = $this->request->getPost('nivel');
+                $resul->genero = 1;
+                $resul->prioridad = '';
+                $resul->entidad_id = 1;
+                $resul->super = 1;
+                $resul->cedula_identidad = $this->request->getPost('cedula_identidad');
+                $resul->expedido = $this->request->getPost('expedido');
+                $resul->theme = '';
+                $resul->direccion = $this->request->getPost('direccion');
+                $resul->paterno = $this->request->getPost('paterno');
+                $resul->materno = $this->request->getPost('materno');
+                $resul->last_login = '';
+                $resul->telefono = $this->request->getPost('telefono');
+                $resul->celular = $this->request->getPost('celular');
+                $resul->baja_logica = 1;
+                if ($resul->save()) {
+                   
+                    $msm ='Exito: Se guardo correctamente';
+                }else{
+                    $msm = 'Error: No se guardo el registro';
+                }
+            }   
+        }
+    $this->view->disable();
+    echo $msm;
+    }
+
+    public function deleteAction(){
+        $resul = Clientes::findFirstById($this->request->getPost('id'));
+        $resul->baja_logica = 0;
+        if ($resul->save()) {
+                    $msm ='Exito: Se elimino correctamente';
+                }else{
+                    $msm = 'Error: No se guardo el registro';
+                }
+        $this->view->disable();
+        echo $msm;
+    }
 
 
     public function profileAction() {
