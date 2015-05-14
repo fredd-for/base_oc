@@ -19,7 +19,8 @@
         'baseUri'        => '   ',
         // Cargar librería fpdf
         'fpdf'        => __DIR__ . '/../../app/libs/fpdf/',
+        'tcpdf'       => __DIR__ . '/../../app/libs/tcpdf/',
         'phpexcel'    => __DIR__ . '/../../app/libs/phpexcel178/',
-        'baseUri'        => '',
+        'baseUri'     => '',
     )
 ));

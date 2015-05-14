@@ -199,7 +199,7 @@ class BasesController extends ControllerRrhh {
     }
 }
 
-    public function listafiltroAction($fecha_inicio,$fecha_fin,$ubicacion,$sector,$tipo,$caracteristica1,$caracteristica2,$caracteristica3,$caracteristica4,$caracteristica5)
+    public function listafiltroAction($fecha_inicio,$fecha_fin,$ubicacion,$sector,$tipo,$caracteristica1,$caracteristica2,$caracteristica3,$caracteristica4,$caracteristica5,$nro_publicaciones)
     {
          //echo "caracteristica1=>".$caracteristica1;
         $where = '';
@@ -232,6 +232,9 @@ class BasesController extends ControllerRrhh {
         }
         if ($caracteristica5!='0') {
             $where.= " AND descripcion1 LIKE '%".$caracteristica5."%'";
+        }
+        if ($nro_publicaciones!='') {
+            $where.= " AND v.cantidad <= '$nro_publicaciones'";
         }
 
 
@@ -397,5 +400,116 @@ ORDER BY v.cantidad DESC";
         $this->view->disable();
         echo $msm;
     }
+
+
+public function exportarAction($fecha_inicio,$fecha_fin,$ubicacion,$sector,$tipo,$caracteristica1,$caracteristica2,$caracteristica3,$caracteristica4,$caracteristica5,$nro_publicaciones)
+{
+
+    $where = '';
+    if ($fecha_inicio!='') {
+        $fecha_inicio = date("Y-m-d",strtotime($fecha_inicio));
+        $fecha_fin = date("Y-m-d",strtotime($fecha_fin));
+        $where.= " AND fecha BETWEEN '$fecha_inicio' AND '$fecha_fin' ";
+    }
+    if ($ubicacion!='0') {
+        $where.= " AND ubicacion='$ubicacion' ";   
+    }
+    if ($sector!='0') {
+        $where.= " AND sector='$sector' ";   
+    }
+    if ($tipo!='0') {
+        $where.= " AND tipo='$tipo' ";   
+    }
+    if ($caracteristica1!='0') {
+        $where.= " AND descripcion1 LIKE '%".$caracteristica1."%'";
+    }
+    if ($caracteristica2!='0') {
+        $where.= " AND descripcion1 LIKE '%".$caracteristica2."%'";
+    }
+    if ($caracteristica3!='0') {
+        $where.= " AND descripcion1 LIKE '%".$caracteristica3."%'";
+    }
+    if ($caracteristica4!='0') {
+        $where.= " AND descripcion1 LIKE '%".$caracteristica4."%'";
+    }
+    if ($caracteristica5!='0') {
+        $where.= " AND descripcion1 LIKE '%".$caracteristica5."%'";
+    }
+    $having='';
+    if ($nro_publicaciones!='') {
+        $where.= "AND (SELECT COUNT(codigo) FROM bases WHERE codigo = b.codigo)<=".$nro_publicaciones;
+    }
+
+
+    $sql = "SELECT ba.* 
+            FROM bases ba,(SELECT b.codigo as cod FROM bases b WHERE  1=1 ".$where." GROUP BY b.codigo) as v
+            WHERE v.cod = ba.codigo 
+            ORDER BY ba.codigo";
+    $model = new Bases();
+    $resul = $model->serverlista($sql);
+
+$pdf = new fpdf('P','mm','Letter');
+     //$pdf = new pdfoasis('L','mm','Letter');
+$pdf->pageWidth=80;
+$pdf->AddPage();
+$pdf->debug=0;
+$pdf->title = utf8_decode('Reporte de Plan Anual de Contratacion de Personal');
+$pdf->header = utf8_decode('Empresa Estatal de Transporte por Cable "Mi Teleférico"');
+$pdf->SetFont('Arial','B',14);
+$pdf->SetXY(50, 28);
+$pdf->Cell(0,0,"REPORTE");
+$pdf->SetXY(10, 35);
+$pdf->SetFont('Arial','B',9);
+ $pdf->SetFillColor(52, 151, 219);//Fondo verde de celda
+ $pdf->SetTextColor(240, 255, 240); //Letra color blanco
+ $pdf->Cell(9,7, 'Nro',1, 0 , 'L', true );
+ $pdf->Cell(30,7, 'Ubicacion',1, 0 , 'L', true );
+ $pdf->Cell(30,7, 'Sector',1, 0 , 'L', true );
+ $pdf->Cell(30,7, 'Tipo',1, 0 , 'L', true );
+ // $pdf->Cell(30,7, 'Tipo 1',1, 0 , 'L', true );
+ $pdf->Cell(20,7, 'Fecha',1, 0 , 'L', true );
+ $pdf->Cell(80,7, 'Descripcion',1, 0 , 'L', true );
+ $pdf->SetXY(10,42);
+ $pdf->SetFont('Arial','',7);
+$pdf->SetFillColor(229, 229, 229); //Gris tenue de cada fila
+$pdf->SetTextColor(3, 3, 3); //Color del texto: Negro
+$c=1;
+$titulo_codigo = '';
+foreach ($resul as $v) {
+    if($titulo_codigo!=$v->codigo){
+        $pdf->Cell(199,7, 'CODIGO : '.$v->codigo,1, 0 , 'L', $bandera );
+        $pdf->Ln();//Salto de línea para generar otra fila        
+        $titulo_codigo=$v->codigo;
+    }
+
+    $bandera = false; //Para alternar el relleno
+    if ($c % 2==0) {
+        $bandera = true; //Para alternar el relleno        
+    }
+    $pdf->Cell(9,7, $c,1, 0 , 'L', $bandera );
+    $pdf->Cell(30,7, utf8_decode($v->ubicacion),1, 0 , 'L', $bandera );
+    $pdf->Cell(30,7, utf8_decode($v->sector),1, 0 , 'L', $bandera );
+    $pdf->Cell(30,7, utf8_decode($v->tipo),1, 0 , 'L', $bandera );
+    // $pdf->Cell(30,7, $v->tipo1,1, 0 , 'L', $bandera ); 
+    $pdf->Cell(20,7, date("d-m-Y", strtotime($v->fecha)),1, 0 , 'L', $bandera );
+    $pdf->Cell(80,7, utf8_decode($v->descripcion),1, 0 , 'L', $bandera );
+    $pdf->Ln();//Salto de línea para generar otra fila    
+    $c++;
+}
+$pdf->Output();
+
+$resul = new Impresiones();
+$resul->usuario_id= $this->_user->id;
+$resul->costo_impresion = $this->_user->cobro_impresion;
+$resul->fecha_reg = date("Y-m-d H:i:s");
+$resul->estado = 1;
+$resul->baja_logica = 1;
+if($resul->save()){
+    $msm = 'Exito, se guardo correctamente';
+}
+
+$this->view->disable();
+}
+
 
 }

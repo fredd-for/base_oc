@@ -100,7 +100,10 @@ class UsuariosController extends ControllerRrhh {
     public function listAction()
     {   $this->view->disable();
         $estado = array('Desabilitado','Habilitado');
-        $resul = Usuarios::find(array('baja_logica=1','order'=>'paterno ASC'));
+
+        $model = new Usuarios();
+        $resul = $model->lista();
+        // $resul = Usuarios::find(array('baja_logica=1','order'=>'paterno ASC'));
         foreach ($resul as $v) {
             $customers[] = array(
                 'id'=>$v->id,
@@ -123,6 +126,10 @@ class UsuariosController extends ControllerRrhh {
                 'celular'=>$v->celular,
                 'habilitado_text' =>$estado[$v->habilitado],
                 'habilitado' =>$v->habilitado,
+                'fecha_inicio' =>$v->fecha_inicio.' 00:00:00',
+                'fecha_fin' =>$v->fecha_fin.' 00:00:00',
+                'cobro_impresion' =>$v->cobro_impresion,
+                'total_cobro' =>$v->total_cobro,
                 );
         }
         echo json_encode($customers);
@@ -134,8 +141,9 @@ class UsuariosController extends ControllerRrhh {
         if (isset($_POST['id'])) {
             if ($_POST['id']>0) {
                 $resul = Usuarios::findFirstById($this->request->getPost('id'));
-                //$resul->username= $this->request->getPost('username');
-                //$resul->password = $this->request->getPost('password');
+                $resul->fecha_inicio = date("Y-m-d",strtotime($this->request->getPost('fecha_inicio')));
+                $resul->fecha_fin = date("Y-m-d",strtotime($this->request->getPost('fecha_fin')));
+                $resul->cobro_impresion= $this->request->getPost('cobro_impresion');
                 $resul->nombre = $this->request->getPost('nombre');
                 $resul->cargo = $this->request->getPost('cargo');
                 $resul->email = $this->request->getPost('email');
@@ -157,9 +165,9 @@ class UsuariosController extends ControllerRrhh {
             else{
                 $resul = new Usuarios();
                 $resul->username= $this->request->getPost('username');
-                $resul->superior = 0;
-                $resul->oficina_id = 1;
-                $resul->dependencia = 1;
+                $resul->fecha_inicio = date("Y-m-d",strtotime($this->request->getPost('fecha_inicio')));
+                $resul->fecha_fin = date("Y-m-d",strtotime($this->request->getPost('fecha_fin')));
+                $resul->cobro_impresion= $this->request->getPost('cobro_impresion');
                 $resul->password = hash_hmac('sha256', $this->request->getPost('password'), '2, 4, 6, 7, 9, 15, 20, 23, 25, 30');
                 $resul->nombre = $this->request->getPost('nombre');
                 $resul->mosca = '';
@@ -196,7 +204,7 @@ class UsuariosController extends ControllerRrhh {
     }
 
     public function deleteAction(){
-        $resul = Clientes::findFirstById($this->request->getPost('id'));
+        $resul = Usuarios::findFirstById($this->request->getPost('id'));
         $resul->baja_logica = 0;
         if ($resul->save()) {
                     $msm ='Exito: Se elimino correctamente';
@@ -221,5 +229,56 @@ class UsuariosController extends ControllerRrhh {
         $this->flash->success('Goodbye!');
         $this->response->redirect('/login');
     }
+
+    public function listimpresionesAction()
+    {
+        $html='<div class="table-responsive">';
+        $suma = 0;
+        if ($_POST['id']>0) {
+            $resul=Impresiones::find(array('baja_logica=1 and estado = 1 and usuario_id='.$_POST['id'],'order'=>'fecha_reg ASC'));
+            if (count($resul)>0) {
+                $html.='<table class="table table-vcenter table-striped">
+                                <thead>
+                                    <tr>
+                                        <th>Fecha Impresión</th>
+                                        <th>Cobro x Impresion</th>
+                                    </tr>
+                                </thead>
+                                <tbody>';
+                foreach ($resul as $v) {
+                    $fecha_reg = date("d-m-Y H:i:s",strtotime($v->fecha_reg));
+                    // $cobro_impresion = $v->cobro_impresion;
+                    $suma+=$v->costo_impresion;
+                    $html.='<tr>
+                                <td>'.$fecha_reg.'</td>
+                                <td class="text-right">'.$v->costo_impresion.' Bs.</td>
+                            </tr>';
+                }   
+                $html.='<tr>
+                                <td><strong>TOTAL</strong></td>
+                                <td class="text-right">'.$suma.' Bs.</td>
+                            </tr></tbody></table>'; 
+            }else{
+                $html.='<p>No se tiene impresiones</p>';
+            }
+               
+        }
+        $html.='</div>';
+        $this->view->disable();
+        echo $html;
+    }
+
+    public function resetimpresionesAction(){
+        $model  = new Usuarios();
+        $resul = $model->resetimpresiones($this->request->getPost('id'));
+        if ($resul) {
+                    $msm ='Exito: Se reseteo correctamente';
+                }else{
+                    $msm = 'Error: No se reseteo el registro';
+                }
+        $this->view->disable();
+        echo $msm;
+    }
+
 
 }

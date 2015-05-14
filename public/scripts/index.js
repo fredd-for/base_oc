@@ -1,6 +1,6 @@
 
 $(document).ready(function (){
-function cargar (fecha_inicio,fecha_fin,ubicacion,sector,tipo,caracteristica1,caracteristica2,caracteristica3,caracteristica4,caracteristica5) {
+function cargar (fecha_inicio,fecha_fin,ubicacion,sector,tipo,caracteristica1,caracteristica2,caracteristica3,caracteristica4,caracteristica5,nro_publicaciones) {
 	//alert(caracteristica1);
 	var source =
 		{
@@ -21,7 +21,7 @@ function cargar (fecha_inicio,fecha_fin,ubicacion,sector,tipo,caracteristica1,ca
 			{ name: 'fecha_registro',type:'date'},
 			{ name: 'usuario_registro',type:'number'},
 			],
-			url: '/bases/listafiltro/'+fecha_inicio+'/'+fecha_fin+'/'+ubicacion+'/'+sector+'/'+tipo+'/'+caracteristica1+'/'+caracteristica2+'/'+caracteristica3+'/'+caracteristica4+'/'+caracteristica5,
+			url: '/bases/listafiltro/'+fecha_inicio+'/'+fecha_fin+'/'+ubicacion+'/'+sector+'/'+tipo+'/'+caracteristica1+'/'+caracteristica2+'/'+caracteristica3+'/'+caracteristica4+'/'+caracteristica5+'/'+nro_publicaciones,
 			root: 'Rows',
 			beforeprocessing: function (data) {
 				source.totalrecords = data[0].TotalRows;
@@ -105,10 +105,49 @@ $("#testForm").submit(function() {
 	if(caracteristica5==''){
 		caracteristica5 = 0;
 	}
-	cargar($("#fecha_inicio").val(),$("#fecha_fin").val(),$("#ubicacion").val(),$("#sector").val(),tipo,caracteristica1,caracteristica2,caracteristica3,caracteristica4,caracteristica5);
+	cargar($("#fecha_inicio").val(),$("#fecha_fin").val(),$("#ubicacion").val(),$("#sector").val(),tipo,caracteristica1,caracteristica2,caracteristica3,caracteristica4,caracteristica5,$("#nro_publicaciones").val());
             return false; // ajax used, block the normal submit
-	});
+});
 
+
+$("#imprimir").click(function(){
+	if ($("#fecha_inicio_habilitado").val()<=$("#fecha_actual").val() && $("#fecha_fin_habilitado").val()>=$("#fecha_actual").val()) {
+		bootbox.confirm("<strong>¡Mensaje!</strong> Esta seguro de realizar la impresión?. Se lo cobrara "+$("#cobro_impresion").val() +" Bs. por la impresión", function(result) {
+			if (result==true) {
+				var tipo = $("#tipo").val();
+		var caracteristica1 = $("#caracteristica1").val();
+		var caracteristica2 = $("#caracteristica2").val();
+		var caracteristica3 = $("#caracteristica3").val();
+		var caracteristica4 = $("#caracteristica4").val();
+		var caracteristica5 = $("#caracteristica5").val();
+		if(tipo==''){
+			tipo = 0;
+		}
+		if(caracteristica1==''){
+			caracteristica1 = 0;
+		}
+		if(caracteristica2==''){
+			caracteristica2 = 0;
+		}
+		if(caracteristica3==''){
+			caracteristica3 = 0;
+		}
+		if(caracteristica4==''){
+			caracteristica4 = 0;
+		}
+		if(caracteristica5==''){
+			caracteristica5 = 0;
+		}
+		window.open('bases/exportar/'+$("#fecha_inicio").val()+'/'+$("#fecha_fin").val()+'/'+$("#ubicacion").val()+'/'+$("#sector").val()+'/'+tipo+'/'+caracteristica1+'/'+caracteristica2+'/'+caracteristica3+'/'+caracteristica4+'/'+caracteristica5+'/'+$("#nro_publicaciones").val(),"_blank");	
+			}
+		});
+		
+	}else{
+		bootbox.alert("<strong>¡Mensaje!</strong> Estimado Usuario, solo esta habilitado la impresión hasta el  "+$("#fecha_fin_habilitado").val()+". Comuniquese con el administrador del sistema. ");
+	}
+
+	
+});
 
 
  	$("#fecha_inicio, #fecha_fin").datepicker({

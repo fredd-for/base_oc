@@ -19,14 +19,14 @@
                 $fecha1 = date("d-m-Y",strtotime($f->fecha_min));
                 $fecha2 = date("d-m-Y",strtotime($f->fecha_max));
             }
-             ?>
+            ?>
             <div class="panel-body">        
                 <div class="tab-content">
                     <div id="domshortcuttiles" class="tab-pane active">
                         <div class="row">
                             <div class="col-md-12">
                                 <div class="form-group">
-                                <label class="col-xs-1 control-label">Actualizado de:</label>
+                                    <label class="col-xs-1 control-label">Actualizado de:</label>
                                     <div class="col-xs-3">
                                         <input type="text" name="fecha1" id="fecha1" class="form-control" value="<?php echo $fecha1 ?>" readonly>
                                     </div>
@@ -39,20 +39,30 @@
                                 </div>
                             </div>
                         </div>
+                        <input type="hidden" name="fecha_inicio_habilitado" id="fecha_inicio_habilitado" value="<?php echo $user->fecha_inicio ?>">
+                        <input type="hidden" name="fecha_fin_habilitado" id="fecha_fin_habilitado" value="<?php echo $user->fecha_fin ?>">
+                        <input type="hidden" name="fecha_actual" id="fecha_actual" value="<?php echo date("Y-m-d") ?>">
+                        <input type="hidden" name="cobro_impresion" id="cobro_impresion" value="<?php echo $user->cobro_impresion ?>">
                         <form class="form-horizontal" id="testForm" data-toggle="validator" action="" method="post"/>
                         <!-- <input type="text" name="datos" id="datos" value="<?php // echo $datos ?>"> -->
                         <div class="row">
                             <div class="col-md-12">
                                 <div class="form-group">
-                                <label class="col-xs-1 control-label">Busqueda:</label>
+                                    <label class="col-xs-1 control-label">Busqueda:</label>
                                     <div class="col-xs-3">
                                         <input type="text" name="fecha_inicio" id="fecha_inicio" class="form-control" data-date-format="dd-mm-yyyy" placeholder="Fecha Inicial (dd-mm-YYYY)" required>
-                                </div>
+                                    </div>
                                     <div class="col-xs-1">
                                         a
                                     </div>
                                     <div class="col-xs-3">
                                         <input type="text" name="fecha_fin" id="fecha_fin" class="form-control"  data-date-format="dd-mm-yyyy" placeholder="Fecha Final (dd-mm-YYYY)" required>
+                                    </div>
+                                    <div class="col-xs-2">
+                                        Publicaciones menor a 
+                                    </div>
+                                    <div class="col-xs-2">
+                                        <input type="number" name="nro_publicaciones" id="nro_publicaciones" placeholder="Numero de Publicaciones" class="form-control" value="10" required>
                                     </div>
                                 </div>
                             </div>
@@ -60,27 +70,27 @@
                         <div class="row">
                             <div class="col-md-12">
                                 <div class="form-group">
-                                <label class="col-xs-1 control-label">Ubicación:</label>
+                                    <label class="col-xs-1 control-label">Ubicación:</label>
                                     <div class="col-xs-3">
                                         <select name="ubicacion" id="ubicacion" class="form-control" placeholder='Seleccionar ubicacion'>
                                             <option value="0">(Seleccionar)</option>
                                             <?php foreach ($ubicacion as $u) { ?>
-                                                <option value="<?php echo $u->ubicacion ?>"><?php echo $u->ubicacion ?></option>
+                                            <option value="<?php echo $u->ubicacion ?>"><?php echo $u->ubicacion ?></option>
                                             <?php } ?>
                                         </select>
                                     </div>
-                                
-                                <label class="col-xs-1 control-label">Sector:</label>
+
+                                    <label class="col-xs-1 control-label">Sector:</label>
                                     <div class="col-xs-3">
                                         <select name="sector" id="sector" class="form-control" placeholder='Seleccionar sector'>
                                             <option value="0">(Seleccionar)</option>
                                             <?php foreach ($sector as $u) { ?>
-                                                <option value="<?php echo $u->sector ?>"><?php echo $u->sector ?></option>
+                                            <option value="<?php echo $u->sector ?>"><?php echo $u->sector ?></option>
                                             <?php } ?>
                                         </select>
                                     </div>
-                                
-                                <label class="col-xs-1 control-label">Tipo:</label>
+
+                                    <label class="col-xs-1 control-label">Tipo:</label>
                                     <div class="col-xs-3">
                                         <input type="text" name="tipo" id="tipo" class="form-control">
                                     </div>
@@ -110,31 +120,32 @@
                             </div>
                             <div class="col-xs-2">
                                 <div class="pull-right">
-                                <!-- <button class="btn btn-sm btn-primary" type="button" id="definir_pp"><i class="fa fa-plus fa-fw"></i>Ejecutar Filtro</button> -->
-                                <button type="submit" class="btn btn-primary" id="Save">Ejecutar Filtro</button>
+                                    <button type="submit" class="btn btn-sm btn-primary" id="Save"><i class="fa fa-search-plus fa-fw"></i>Filtrar</button>
+                                    <button class="btn btn-sm btn-warning" type="button" id="imprimir"><i class="fa fa-archive fa-fw"></i>Imprimir PDF</button>
+                                    
                                 </div>
                             </div>
                         </div>
-                        </form>
-                        <br>
-                        <div class="row">
-                            <div class="col-md-12">
-                                <div id="jqxgrid" style="height: 650px; width: 100%;" ></div>
-                            </div>
+                    </form>
+                    <br>
+                    <div class="row">
+                        <div class="col-md-12">
+                            <div id="jqxgrid" style="height: 650px; width: 100%;" ></div>
                         </div>
-
                     </div>
+
+                </div>
                     <!-- <div id="codeshortcuttiles" class="tab-pane">
 
-                    </div> -->
-                </div>
+                </div> -->
             </div>
         </div>
-
     </div>
+
+</div>
 </div>
 <style type="text/css">
-                    .datepicker{
-                        z-index:1151 !important;
-                    }
-                </style>
+    .datepicker{
+        z-index:1151 !important;
+    }
+</style>

@@ -31,6 +31,8 @@
 							<div class="pull-left">
                                 <button class="btn btn-sm btn-primary" type="button" id="add"><i class="fa fa-plus fa-fw"></i>Adicionar</button>
                                 <button class="btn btn-sm btn-warning" type="button" id="edit"><i class="fa fa-pencil fa-fw"></i> Editar</button>
+                                <button class="btn btn-sm btn-success" type="button" id="ver_impresiones"><i class="fa fa-pencil fa-fw"></i> Ver Impresiones</button>
+                                <button class="btn btn-sm btn-default" type="button" id="reset_impresiones"><i class="fa fa-pencil fa-fw"></i> Reset Impresiones</button>
                 				<button class="btn btn-sm btn-danger" type="button" id="delete"><i class="fa fa-trash-o fa-fw"></i> Eliminar</button>
 							</div>
 						</div>
@@ -64,21 +66,15 @@
 					</div>
 				</div>
 				<div class="form-group">
-					<label class="col-md-3 control-label">Nombre(s):</label>
-					<div class="col-md-9">
-						<input type="text" name="nombre" id="nombre" class="form-control" required>
+					<label class="col-md-3 control-label">Nombre(s) y Apellidos:</label>
+					<div class="col-md-3">
+						<input type="text" name="nombre" id="nombre" class="form-control" placeholder="Nombre(s)"  required>
 					</div>
-				</div>
-				<div class="form-group" >
-					<label class="col-md-3 control-label">Apellido Paterno</label>
-					<div class="col-md-9">
-						<input type="text" name="paterno" id="paterno" class="form-control">
+					<div class="col-md-3">
+						<input type="text" name="paterno" id="paterno" class="form-control" placeholder="Apellido Paterno" >
 					</div>
-				</div>
-				<div class="form-group" >
-					<label class="col-md-3 control-label">Materno</label>
-					<div class="col-md-9">
-						<input type="text" name="materno" id="materno" class="form-control">
+					<div class="col-md-3">
+						<input type="text" name="materno" id="materno" class="form-control" placeholder="Apellido Materno" >
 					</div>
 				</div>
 				<div class="form-group" >
@@ -116,9 +112,25 @@
 				</div>
 				<div class="form-group" >
 					<label class="col-md-3 control-label">Estado</label>
-					<div class="col-md-9">
+					<div class="col-md-3">
 						<?php echo $estado ?>
 					</div>
+					<label class="col-md-3 control-label">Cobro Impresión Bs.</label>
+					<div class="col-md-3">
+						<input type="text" name="cobro_impresion" id="cobro_impresion" class="form-control"  title="">
+					</div>
+				</div>
+				<div class="form-group" >
+					<label class="col-md-3 control-label">Periodo Activo</label>
+					 <div class="col-xs-4">
+                     <input type="text" name="fecha_inicio" id="fecha_inicio" class="form-control" data-date-format="dd-mm-yyyy" placeholder="Fecha Inicial" required>
+                     </div>
+                     <div class="col-xs-1">
+                                        a
+                    </div>
+                    <div class="col-xs-4">
+                    <input type="text" name="fecha_fin" id="fecha_fin" class="form-control"  data-date-format="dd-mm-yyyy" placeholder="Fecha Final" required>
+                    </div>
 				</div>
 				<hr>
 				<div class="form-group ocultar" >
@@ -144,3 +156,26 @@
 </div>
 <!-- end  modal -->
 
+<div class="modal fade" id="myModal_verimpresiones" tabindex="-1" role="dialog" aria-labelledby="myModalLabel" aria-hidden="true">
+	<div class="modal-dialog">
+		<div class="modal-content">
+			<form class="form-horizontal" id="testForm" data-toggle="validator" action="" method="post" />
+				<div class="modal-header">
+				<button type="button" class="close" data-dismiss="modal"><span aria-hidden="true">&times;</span><span class="sr-only">Close</span></button>
+				<h4 class="modal-title" id="titulo_verimpresiones">Ver Impresiones</h4>
+				</div>
+				<div class="modal-body">
+					<div id="contenido_pp">
+					</div>
+				</div>
+						
+			</form>
+		</div>
+	</div>
+</div>
+
+<style type="text/css">
+    .datepicker{
+        z-index:1151 !important;
+    }
+</style>

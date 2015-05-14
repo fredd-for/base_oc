@@ -13,8 +13,12 @@ class Usuarios extends \Phalcon\Mvc\Model {
 
     public function lista() {
         //$this->setConnectionService('db');
-        $sql = "SELECT * FROM usuarios";
-        $users = new Users();
+        $sql = "SELECT u.*, SUM(costo_impresion) as total_cobro
+        FROM usuarios u
+        LEFT JOIN impresiones i ON u.id = i.usuario_id AND i.baja_logica= 1 AND i.estado = 1
+        WHERE u.baja_logica = 1 
+        GROUP BY u.id";
+        $users = new Usuarios();
         return new Resultset(null, $users, $users->getReadConnection()->query($sql));
     }
 
@@ -38,6 +42,13 @@ class Usuarios extends \Phalcon\Mvc\Model {
               WHERE u.id='$id'";
         $this->_db = new usuarios();
         return new Resultset(null, $this->_db, $this->_db->getReadConnection()->query($sql));
+    }
+
+    public function resetimpresiones($usuario_id)
+    {
+        $sql = "UPDATE impresiones SET estado = 0 WHERE usuario_id = '$usuario_id'";
+        $this->_db = new usuarios();
+        return new Resultset(null, $this->_db, $this->_db->getReadConnection()->query($sql));   
     }
 
 }

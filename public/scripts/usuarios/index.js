@@ -25,6 +25,10 @@ cargar();
 			{ name: 'direccion',type:'string'},
 			{ name: 'habilitado',type:'number'},
 			{ name: 'habilitado_text',type:'string'},
+			{ name: 'fecha_inicio',type: 'date'},
+			{ name: 'fecha_fin',type: 'date'},
+			{ name: 'cobro_impresion',type: 'number'},
+			{ name: 'total_cobro',type: 'number'},
 			],
 			url: '/usuarios/list/',
 			cache: false
@@ -59,10 +63,15 @@ cargar();
 			{ text: 'Cedula Identidad', datafield: 'ci_texto', filtertype: 'input',width: '8%' },
 			{ text: 'Correo Electronico', datafield: 'email', filtertype: 'input',width: '17%' },
 			{ text: 'Usuario', datafield: 'username', filtertype: 'input',width: '10%' },
-			{ text: 'Telefono', datafield: 'telefono', filtertype: 'number', width: '10%',cellsalign: 'right'},
-			{ text: 'Celular', datafield: 'celular', filtertype: 'number', width: '10%',cellsalign: 'right'},
+			{ text: 'Estado', datafield: 'habilitado_text', filtertype: 'number', width: '8%',cellsalign: 'right'},
+			{ text: 'Cobro Impresión', datafield: 'cobro_impresion', filtertype: 'number', width: '8%',cellsalign: 'right'},
+			{ text: 'Total Cobro', datafield: 'total_cobro', filtertype: 'number', width: '8%',cellsalign: 'right'},
+			{ text: 'Fecha Inicio', datafield: 'fecha_inicio', filtertype: 'range', width: '8%', cellsalign: 'center', cellsformat: 'dd-MM-yyyy',align:'center'},
+			{ text: 'Fecha Finalización', datafield: 'fecha_fin', filtertype: 'range', width: '8%', cellsalign: 'center', cellsformat: 'dd-MM-yyyy',align:'center'},
+			{ text: 'Telefono', datafield: 'telefono', filtertype: 'number', width: '8%',cellsalign: 'right'},
+			{ text: 'Celular', datafield: 'celular', filtertype: 'number', width: '8%',cellsalign: 'right'},
 			{ text: 'Dirección', datafield: 'direccion', filtertype: 'number', width: '15%',cellsalign: 'right'},
-			{ text: 'Estado', datafield: 'habilitado_text', filtertype: 'number', width: '10%',cellsalign: 'right'},
+			
 	        ]
 	});
 
@@ -88,6 +97,9 @@ $("#add").click(function(){
 	$("#habilitado").val("");
 	$("#direccion").val("");
 	$("#habilitado").val("");
+	$("#fecha_inicio").val("");
+	$("#fecha_fin").val("");
+	$("#cobro_impresion").val("");
 	$(".ocultar").show();
 	$('#myModal').modal('show');
 
@@ -117,6 +129,11 @@ $("#edit").click(function() {
 		$("#habilitado").val(dataRecord.habilitado);
 		$("#direccion").val(dataRecord.direccion);
 		$("#habilitado").val(dataRecord.habilitado);
+		var fe = $.jqx.dataFormat.formatdate(dataRecord.fecha_inicio, 'dd-MM-yyyy');
+        var fa = $.jqx.dataFormat.formatdate(dataRecord.fecha_fin, 'dd-MM-yyyy');
+		$("#fecha_inicio").val(fe);
+		$("#fecha_fin").val(fa);
+		$("#cobro_impresion").val(dataRecord.cobro_impresion);
 		$('#myModal').modal('show');
 		// alert(dataRecord.habilitado);
 	}
@@ -126,6 +143,67 @@ $("#edit").click(function() {
 	}
 
 });
+
+// Ver Impresiones
+$("#ver_impresiones").click(function() {
+	var rowindex = $('#jqxgrid').jqxGrid('getselectedrowindex');
+	if (rowindex > -1)
+	{
+		var dataRecord = $("#jqxgrid").jqxGrid('getrowdata', rowindex);
+		$("#titulo_pp").text("Ver Impresiones");
+		var v=$.ajax({
+			url:'/usuarios/listimpresiones/',
+			type:'POST',
+			datatype: 'json',
+			data:{id:dataRecord.id},
+			success: function(data) { 
+			$("#contenido_pp").html(data);	
+			}, 
+			error: function() { alert('Se ha producido un error Inesperado'); }
+		});	
+		$('#myModal_verimpresiones').modal('show');
+		
+	}
+	else
+	{
+		bootbox.alert("<strong>¡Mensaje!</strong> Seleccionar un registro para editar.");
+	}
+
+});
+
+//reset impresiones
+$("#reset_impresiones").click(function() {
+	var rowindex = $('#jqxgrid').jqxGrid('getselectedrowindex');
+	if (rowindex > -1)
+	{
+		var dataRecord = $("#jqxgrid").jqxGrid('getrowdata', rowindex);
+		bootbox.confirm("<strong>¡Mensaje!</strong> Esta seguro de resetear a cero el cobro por impresiones?.", function(result) {
+ 			if (result == true) {
+ 				var v = $.ajax({
+ 					url: '/usuarios/resetimpresiones/',
+ 					type: 'POST',
+ 					datatype: 'json',
+ 					data: {id: dataRecord.id},
+ 					success: function(data) {
+                            cargar(); //alert('Guardado Correctamente'); 
+                            $("#divMsjeExito").show();
+                            $("#divMsjeExito").addClass('alert alert-warning alert-dismissable');
+                            $("#aMsjeExito").html(data); 
+                        }, //mostramos el error
+                        error: function() {
+                        	alert('Se ha producido un error Inesperado');
+                        }
+                    });
+ 			}
+ 		});
+	}
+	else
+	{
+		bootbox.alert("<strong>¡Mensaje!</strong> Seleccionar un registro para editar.");
+	}
+
+});
+
 
 /*
 Eliminar
@@ -172,7 +250,7 @@ $("#testForm").submit(function() {
             	url:'/usuarios/save/',
             	type:'POST',
             	datatype: 'json',
-            	data:{id:$("#id").val(),nombre:$("#nombre").val(),paterno:$("#paterno").val(),materno:$("#materno").val(),cedula_identidad:$("#cedula_identidad").val(),expedido:$("#expedido").val(),email:$("#email").val(),telefono:$("#telefono").val(),celular:$("#celular").val(),direccion:$("#direccion").val(),habilitado:$("#habilitado").val(),username:$("#username").val(),password:$("#password").val(),nivel:$("#nivel").val()},
+            	data:{id:$("#id").val(),nombre:$("#nombre").val(),paterno:$("#paterno").val(),materno:$("#materno").val(),cedula_identidad:$("#cedula_identidad").val(),expedido:$("#expedido").val(),email:$("#email").val(),telefono:$("#telefono").val(),celular:$("#celular").val(),direccion:$("#direccion").val(),habilitado:$("#habilitado").val(),username:$("#username").val(),password:$("#password").val(),nivel:$("#nivel").val(),fecha_inicio:$("#fecha_inicio").val(),fecha_fin:$("#fecha_fin").val(),cobro_impresion:$("#cobro_impresion").val()},
 				success: function(data) { cargar(); 
 					$("#divMsjeExito").show();
                     $("#divMsjeExito").addClass('alert alert-info alert-dismissable');
@@ -185,4 +263,7 @@ $("#testForm").submit(function() {
 });
 
 
+$("#fecha_inicio, #fecha_fin").datepicker({
+ 		autoclose:true,
+ 	});
 })
