@@ -402,10 +402,119 @@ ORDER BY v.cantidad DESC";
     }
 
 
+// public function exportarAction($fecha_inicio,$fecha_fin,$ubicacion,$sector,$tipo,$caracteristica1,$caracteristica2,$caracteristica3,$caracteristica4,$caracteristica5,$nro_publicaciones)
+// {
+
+//     $where = '';
+//     if ($fecha_inicio!='') {
+//         $fecha_inicio = date("Y-m-d",strtotime($fecha_inicio));
+//         $fecha_fin = date("Y-m-d",strtotime($fecha_fin));
+//         $where.= " AND fecha BETWEEN '$fecha_inicio' AND '$fecha_fin' ";
+//     }
+//     if ($ubicacion!='0') {
+//         $where.= " AND ubicacion='$ubicacion' ";   
+//     }
+//     if ($sector!='0') {
+//         $where.= " AND sector='$sector' ";   
+//     }
+//     if ($tipo!='0') {
+//         $where.= " AND tipo='$tipo' ";   
+//     }
+//     if ($caracteristica1!='0') {
+//         $where.= " AND descripcion1 LIKE '%".$caracteristica1."%'";
+//     }
+//     if ($caracteristica2!='0') {
+//         $where.= " AND descripcion1 LIKE '%".$caracteristica2."%'";
+//     }
+//     if ($caracteristica3!='0') {
+//         $where.= " AND descripcion1 LIKE '%".$caracteristica3."%'";
+//     }
+//     if ($caracteristica4!='0') {
+//         $where.= " AND descripcion1 LIKE '%".$caracteristica4."%'";
+//     }
+//     if ($caracteristica5!='0') {
+//         $where.= " AND descripcion1 LIKE '%".$caracteristica5."%'";
+//     }
+//     $having='';
+//     if ($nro_publicaciones!='') {
+//         $where.= "AND (SELECT COUNT(codigo) FROM bases WHERE codigo = b.codigo)<=".$nro_publicaciones;
+//     }
+
+
+//     $sql = "SELECT ba.* 
+//             FROM bases ba,(SELECT b.codigo as cod FROM bases b WHERE  1=1 ".$where." GROUP BY b.codigo) as v
+//             WHERE v.cod = ba.codigo 
+//             ORDER BY ba.codigo";
+//     $model = new Bases();
+//     $resul = $model->serverlista($sql);
+
+// $pdf = new fpdf('P','mm','Letter');
+//      //$pdf = new pdfoasis('L','mm','Letter');
+// $pdf->pageWidth=80;
+// $pdf->AddPage();
+// $pdf->debug=0;
+// $pdf->title = utf8_decode('Reporte de Plan Anual de Contratacion de Personal');
+// $pdf->header = utf8_decode('Empresa Estatal de Transporte por Cable "Mi Teleférico"');
+// $pdf->SetFont('Arial','B',14);
+// $pdf->SetXY(50, 28);
+// $pdf->Cell(0,0,"REPORTE");
+// $pdf->SetXY(10, 35);
+// $pdf->SetFont('Arial','B',9);
+//  $pdf->SetFillColor(52, 151, 219);//Fondo verde de celda
+//  $pdf->SetTextColor(240, 255, 240); //Letra color blanco
+//  $pdf->Cell(9,7, 'Nro',1, 0 , 'L', true );
+//  $pdf->Cell(30,7, 'Ubicacion',1, 0 , 'L', true );
+//  $pdf->Cell(30,7, 'Sector',1, 0 , 'L', true );
+//  $pdf->Cell(30,7, 'Tipo',1, 0 , 'L', true );
+//  // $pdf->Cell(30,7, 'Tipo 1',1, 0 , 'L', true );
+//  $pdf->Cell(20,7, 'Fecha',1, 0 , 'L', true );
+//  $pdf->Cell(80,7, 'Descripcion',1, 0 , 'L', true );
+//  $pdf->SetXY(10,42);
+//  $pdf->SetFont('Arial','',7);
+// $pdf->SetFillColor(229, 229, 229); //Gris tenue de cada fila
+// $pdf->SetTextColor(3, 3, 3); //Color del texto: Negro
+// $c=1;
+// $titulo_codigo = '';
+// foreach ($resul as $v) {
+//     if($titulo_codigo!=$v->codigo){
+//         $pdf->Cell(199,7, 'CODIGO : '.$v->codigo,1, 0 , 'L', $bandera );
+//         $pdf->Ln();//Salto de línea para generar otra fila        
+//         $titulo_codigo=$v->codigo;
+//     }
+
+//     $bandera = false; //Para alternar el relleno
+//     if ($c % 2==0) {
+//         $bandera = true; //Para alternar el relleno        
+//     }
+//     $pdf->Cell(9,7, $c,1, 0 , 'L', $bandera );
+//     $pdf->Cell(30,7, utf8_decode($v->ubicacion),1, 0 , 'L', $bandera );
+//     $pdf->Cell(30,7, utf8_decode($v->sector),1, 0 , 'L', $bandera );
+//     $pdf->Cell(30,7, utf8_decode($v->tipo),1, 0 , 'L', $bandera );
+//     // $pdf->Cell(30,7, $v->tipo1,1, 0 , 'L', $bandera ); 
+//     $pdf->Cell(20,7, date("d-m-Y", strtotime($v->fecha)),1, 0 , 'L', $bandera );
+//     $pdf->Cell(80,7, utf8_decode($v->descripcion),1, 0 , 'L', $bandera );
+//     $pdf->Ln();//Salto de línea para generar otra fila    
+//     $c++;
+// }
+// $pdf->Output();
+
+// $resul = new Impresiones();
+// $resul->usuario_id= $this->_user->id;
+// $resul->costo_impresion = $this->_user->cobro_impresion;
+// $resul->fecha_reg = date("Y-m-d H:i:s");
+// $resul->estado = 1;
+// $resul->baja_logica = 1;
+// if($resul->save()){
+//     $msm = 'Exito, se guardo correctamente';
+// }
+
+// $this->view->disable();
+// }
+
 public function exportarAction($fecha_inicio,$fecha_fin,$ubicacion,$sector,$tipo,$caracteristica1,$caracteristica2,$caracteristica3,$caracteristica4,$caracteristica5,$nro_publicaciones)
 {
-
-    $where = '';
+require_once('tcpdf/examples/tcpdf_include.php');
+$where = '';
     if ($fecha_inicio!='') {
         $fecha_inicio = date("Y-m-d",strtotime($fecha_inicio));
         $fecha_fin = date("Y-m-d",strtotime($fecha_fin));
@@ -447,66 +556,115 @@ public function exportarAction($fecha_inicio,$fecha_fin,$ubicacion,$sector,$tipo
             ORDER BY ba.codigo";
     $model = new Bases();
     $resul = $model->serverlista($sql);
+// create new PDF document
+$pdf = new TCPDF(PDF_PAGE_ORIENTATION, PDF_UNIT, 'LETTER', true, 'UTF-8', false);
 
-$pdf = new fpdf('P','mm','Letter');
-     //$pdf = new pdfoasis('L','mm','Letter');
-$pdf->pageWidth=80;
+// set document information
+$pdf->SetCreator(PDF_CREATOR);
+$pdf->SetAuthor('Luis Freddy Velasco');
+$pdf->SetTitle('Reporte');
+$pdf->SetSubject('Reporte');
+$pdf->SetKeywords('TCPDF, PDF, example, test, guide');
+
+// set default header data
+$pdf->SetHeaderData('../../../assets/img/logo.png', PDF_HEADER_LOGO_WIDTH, 'SISTEMA OSVALDO CARLO', 'Contactos - ocarlo@fh.org', array(0,64,255), array(0,64,128));
+$pdf->setFooterData(array(0,64,0), array(0,64,128));
+
+// set header and footer fonts
+$pdf->setHeaderFont(Array(PDF_FONT_NAME_MAIN, '', PDF_FONT_SIZE_MAIN));
+$pdf->setFooterFont(Array(PDF_FONT_NAME_DATA, '', PDF_FONT_SIZE_DATA));
+
+// set default monospaced font
+$pdf->SetDefaultMonospacedFont(PDF_FONT_MONOSPACED);
+
+// set margins
+$pdf->SetMargins(PDF_MARGIN_LEFT, PDF_MARGIN_TOP, PDF_MARGIN_RIGHT);
+$pdf->SetHeaderMargin(PDF_MARGIN_HEADER);
+$pdf->SetFooterMargin(PDF_MARGIN_FOOTER);
+
+// set auto page breaks
+$pdf->SetAutoPageBreak(TRUE, PDF_MARGIN_BOTTOM);
+
+// set image scale factor
+$pdf->setImageScale(PDF_IMAGE_SCALE_RATIO);
+
+// set some language-dependent strings (optional)
+if (@file_exists(dirname(__FILE__).'/lang/eng.php')) {
+    require_once(dirname(__FILE__).'/lang/eng.php');
+    $pdf->setLanguageArray($l);
+}
+
+// ---------------------------------------------------------
+
+// set default font subsetting mode
+$pdf->setFontSubsetting(true);
+
+// Set font
+// dejavusans is a UTF-8 Unicode font, if you only need to
+// print standard ASCII chars, you can use core fonts like
+// helvetica or times to reduce file size.
+$pdf->SetFont('dejavusans', '', 14, '', true);
+
+// Add a page
+// This method has several options, check the source code documentation for more information.
 $pdf->AddPage();
-$pdf->debug=0;
-$pdf->title = utf8_decode('Reporte de Plan Anual de Contratacion de Personal');
-$pdf->header = utf8_decode('Empresa Estatal de Transporte por Cable "Mi Teleférico"');
-$pdf->SetFont('Arial','B',14);
-$pdf->SetXY(50, 28);
-$pdf->Cell(0,0,"REPORTE");
-$pdf->SetXY(10, 35);
-$pdf->SetFont('Arial','B',9);
- $pdf->SetFillColor(52, 151, 219);//Fondo verde de celda
- $pdf->SetTextColor(240, 255, 240); //Letra color blanco
- $pdf->Cell(9,7, 'Nro',1, 0 , 'L', true );
- $pdf->Cell(30,7, 'Ubicacion',1, 0 , 'L', true );
- $pdf->Cell(30,7, 'Sector',1, 0 , 'L', true );
- $pdf->Cell(30,7, 'Tipo',1, 0 , 'L', true );
- // $pdf->Cell(30,7, 'Tipo 1',1, 0 , 'L', true );
- $pdf->Cell(20,7, 'Fecha',1, 0 , 'L', true );
- $pdf->Cell(80,7, 'Descripcion',1, 0 , 'L', true );
- $pdf->SetXY(10,42);
- $pdf->SetFont('Arial','',7);
-$pdf->SetFillColor(229, 229, 229); //Gris tenue de cada fila
-$pdf->SetTextColor(3, 3, 3); //Color del texto: Negro
-$c=1;
-$titulo_codigo = '';
-foreach ($resul as $v) {
-    if($titulo_codigo!=$v->codigo){
-        $pdf->Cell(199,7, 'CODIGO : '.$v->codigo,1, 0 , 'L', $bandera );
-        $pdf->Ln();//Salto de línea para generar otra fila        
-        $titulo_codigo=$v->codigo;
-    }
 
-    $bandera = false; //Para alternar el relleno
-    if ($c % 2==0) {
-        $bandera = true; //Para alternar el relleno        
-    }
-    $pdf->Cell(9,7, $c,1, 0 , 'L', $bandera );
-    $pdf->Cell(30,7, utf8_decode($v->ubicacion),1, 0 , 'L', $bandera );
-    $pdf->Cell(30,7, utf8_decode($v->sector),1, 0 , 'L', $bandera );
-    $pdf->Cell(30,7, utf8_decode($v->tipo),1, 0 , 'L', $bandera );
-    // $pdf->Cell(30,7, $v->tipo1,1, 0 , 'L', $bandera ); 
-    $pdf->Cell(20,7, date("d-m-Y", strtotime($v->fecha)),1, 0 , 'L', $bandera );
-    $pdf->Cell(80,7, utf8_decode($v->descripcion),1, 0 , 'L', $bandera );
-    $pdf->Ln();//Salto de línea para generar otra fila    
+// set text shadow effect
+$pdf->setTextShadow(array('enabled'=>true, 'depth_w'=>0.2, 'depth_h'=>0.2, 'color'=>array(196,196,196), 'opacity'=>1, 'blend_mode'=>'Normal'));
+
+// Set some content to print
+$html = '
+<table border="1" style="border-collapse: collapse; margin: 5px; padding: 5px;  font-size:8px;">
+    <thead>
+        <tr style ="font-size:9px;color:#333333;background-color: #9ad4ed;">
+            <th width="30px">Nro</th>
+            <th width="90px">Ubicación</th>
+            <th width="80px">Sector</th>
+            <th width="80px">Tipo</th>
+            <th width="80px">Tipo 2</th>
+            <th width="80px">Fecha</th>
+            <th width="200px">Descripción</th>
+        </tr>
+    </thead>
+    <tbody>';
+    $c=1;
+        foreach ($resul as $v) {
+            $color = '#ffffff';
+            if ($c % 2==0) {
+                $color = '#f4f4f4'; //Para alternar el relleno        
+            }
+            if($titulo_codigo!=$v->codigo){
+                $html .= '<tr>
+                <td colspan="7" width="640px"><b>CODIGO : '.$v->codigo.'</b></td>
+            </tr>';   
+             $titulo_codigo=$v->codigo;
+        }
+        $html .= '<tr bgcolor="'.$color.'">
+        <td width="30px">'.$c.'</td>
+        <td width="90px">'.$v->ubicacion.'</td>
+        <td width="80px">'.$v->sector.'</td>
+        <td width="80px">'.$v->tipo.'</td>
+        <td width="80px">'.$v->tipo1.'</td>
+        <td width="80px">'.date("d-m-Y",strtotime($v->fecha)).'</td>
+        <td width="200px">'.$v->descripcion.'</td>
+    </tr>';
     $c++;
 }
-$pdf->Output();
+    $html .= '</tbody>
+</table>';
 
-$resul = new Impresiones();
-$resul->usuario_id= $this->_user->id;
-$resul->costo_impresion = $this->_user->cobro_impresion;
-$resul->fecha_reg = date("Y-m-d H:i:s");
-$resul->estado = 1;
-$resul->baja_logica = 1;
-if($resul->save()){
-    $msm = 'Exito, se guardo correctamente';
-}
+// Print text using writeHTMLCell()
+$pdf->writeHTMLCell(0, 0, '', '', $html, 0, 1, 0, true, '', true);
+
+// ---------------------------------------------------------
+
+// Close and output PDF document
+// This method has several options, check the source code documentation for more information.
+$pdf->Output('example_001.pdf', 'I');
+
+//============================================================+
+// END OF FILE
+//============================================================+
 
 $this->view->disable();
 }
