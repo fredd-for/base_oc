@@ -145,57 +145,55 @@ $("#edit").click(function() {
 });
 
 // Ver Impresiones
+// $("#ver_impresiones").click(function() {
+// 	var rowindex = $('#jqxgrid').jqxGrid('getselectedrowindex');
+// 	if (rowindex > -1)
+// 	{
+// 		var dataRecord = $("#jqxgrid").jqxGrid('getrowdata', rowindex);
+// 		$("#titulo_pp").text("Ver Impresiones");
+// 		var v=$.ajax({
+// 			url:'/usuarios/listimpresiones/',
+// 			type:'POST',
+// 			datatype: 'json',
+// 			data:{id:dataRecord.id},
+// 			success: function(data) { 
+// 			$("#contenido_pp").html(data);	
+// 			}, 
+// 			error: function() { alert('Se ha producido un error Inesperado'); }
+// 		});	
+// 		$('#myModal_verimpresiones').modal('show');
+		
+// 	}
+// 	else
+// 	{
+// 		bootbox.alert("<strong>¡Mensaje!</strong> Seleccionar un registro para editar.");
+// 	}
+
+// });
+
 $("#ver_impresiones").click(function() {
 	var rowindex = $('#jqxgrid').jqxGrid('getselectedrowindex');
 	if (rowindex > -1)
 	{
 		var dataRecord = $("#jqxgrid").jqxGrid('getrowdata', rowindex);
-		$("#titulo_pp").text("Ver Impresiones");
-		var v=$.ajax({
-			url:'/usuarios/listimpresiones/',
-			type:'POST',
-			datatype: 'json',
-			data:{id:dataRecord.id},
-			success: function(data) { 
-			$("#contenido_pp").html(data);	
-			}, 
-			error: function() { alert('Se ha producido un error Inesperado'); }
-		});	
-		$('#myModal_verimpresiones').modal('show');
+		document.location.href = '/usuarios/verimpresiones/'+dataRecord.id;
 		
 	}
 	else
 	{
-		bootbox.alert("<strong>¡Mensaje!</strong> Seleccionar un registro para editar.");
+		bootbox.alert("<strong>¡Mensaje!</strong> Seleccionar un registro.");
 	}
 
 });
 
 //reset impresiones
-$("#reset_impresiones").click(function() {
+$("#deposito").click(function() {
 	var rowindex = $('#jqxgrid').jqxGrid('getselectedrowindex');
 	if (rowindex > -1)
 	{
 		var dataRecord = $("#jqxgrid").jqxGrid('getrowdata', rowindex);
-		bootbox.confirm("<strong>¡Mensaje!</strong> Esta seguro de resetear a cero el cobro por impresiones?.", function(result) {
- 			if (result == true) {
- 				var v = $.ajax({
- 					url: '/usuarios/resetimpresiones/',
- 					type: 'POST',
- 					datatype: 'json',
- 					data: {id: dataRecord.id},
- 					success: function(data) {
-                            cargar(); //alert('Guardado Correctamente'); 
-                            $("#divMsjeExito").show();
-                            $("#divMsjeExito").addClass('alert alert-warning alert-dismissable');
-                            $("#aMsjeExito").html(data); 
-                        }, //mostramos el error
-                        error: function() {
-                        	alert('Se ha producido un error Inesperado');
-                        }
-                    });
- 			}
- 		});
+		$("#id").val(dataRecord.id);
+		$('#myModal_deposito').modal('show');
 	}
 	else
 	{
@@ -263,7 +261,29 @@ $("#testForm").submit(function() {
 });
 
 
-$("#fecha_inicio, #fecha_fin").datepicker({
+/*
+guardar deposito
+ */
+$("#testForm_deposito").submit(function() {
+	// alert($("#id").val());
+	var v=$.ajax({
+            	url:'/usuarios/savedeposito/',
+            	type:'POST',
+            	datatype: 'json',
+            	data:{id:$("#id").val(),fecha_deposito:$("#fecha_deposito").val(),deposito:$("#monto_deposito").val()},
+				success: function(data) { cargar(); 
+					$("#divMsjeExito").show();
+                    $("#divMsjeExito").addClass('alert alert-info alert-dismissable');
+                    $("#aMsjeExito").html(data); 
+				}, //mostramos el error
+			error: function() { alert('Se ha producido un error Inesperado'); }
+			});
+            $('#myModal_deposito').modal('hide');
+            return false; // ajax used, block the normal submit
+});
+
+
+$("#fecha_inicio, #fecha_fin,#fecha_deposito").datepicker({
  		autoclose:true,
  	});
 })

@@ -65,8 +65,8 @@ class UsuariosController extends ControllerRrhh {
         array(
             "nivel",
             array(
-                "1" => "Administrador",
-                "2"   => "Consultas",
+                "2" => "Administrador",
+                "3"   => "Consultas",
                 ),
             'useEmpty' => true,
             'emptyText' => '(Selecionar)',
@@ -230,43 +230,43 @@ class UsuariosController extends ControllerRrhh {
         $this->response->redirect('/login');
     }
 
-    public function listimpresionesAction()
-    {
-        $html='<div class="table-responsive">';
-        $suma = 0;
-        if ($_POST['id']>0) {
-            $resul=Impresiones::find(array('baja_logica=1 and estado = 1 and usuario_id='.$_POST['id'],'order'=>'fecha_reg ASC'));
-            if (count($resul)>0) {
-                $html.='<table class="table table-vcenter table-striped">
-                                <thead>
-                                    <tr>
-                                        <th>Fecha Impresión</th>
-                                        <th>Cobro x Impresion</th>
-                                    </tr>
-                                </thead>
-                                <tbody>';
-                foreach ($resul as $v) {
-                    $fecha_reg = date("d-m-Y H:i:s",strtotime($v->fecha_reg));
-                    // $cobro_impresion = $v->cobro_impresion;
-                    $suma+=$v->costo_impresion;
-                    $html.='<tr>
-                                <td>'.$fecha_reg.'</td>
-                                <td class="text-right">'.$v->costo_impresion.' Bs.</td>
-                            </tr>';
-                }   
-                $html.='<tr>
-                                <td><strong>TOTAL</strong></td>
-                                <td class="text-right">'.$suma.' Bs.</td>
-                            </tr></tbody></table>'; 
-            }else{
-                $html.='<p>No se tiene impresiones</p>';
-            }
+    // public function listimpresionesAction()
+    // {
+    //     $html='<div class="table-responsive">';
+    //     $suma = 0;
+    //     if ($_POST['id']>0) {
+    //         $resul=Impresiones::find(array('baja_logica=1 and estado = 1 and usuario_id='.$_POST['id'],'order'=>'fecha_reg ASC'));
+    //         if (count($resul)>0) {
+    //             $html.='<table class="table table-vcenter table-striped">
+    //                             <thead>
+    //                                 <tr>
+    //                                     <th>Fecha Impresión</th>
+    //                                     <th>Cobro x Impresion</th>
+    //                                 </tr>
+    //                             </thead>
+    //                             <tbody>';
+    //             foreach ($resul as $v) {
+    //                 $fecha_reg = date("d-m-Y H:i:s",strtotime($v->fecha_reg));
+    //                 // $cobro_impresion = $v->cobro_impresion;
+    //                 $suma+=$v->costo_impresion;
+    //                 $html.='<tr>
+    //                             <td>'.$fecha_reg.'</td>
+    //                             <td class="text-right">'.$v->costo_impresion.' Bs.</td>
+    //                         </tr>';
+    //             }   
+    //             $html.='<tr>
+    //                             <td><strong>TOTAL</strong></td>
+    //                             <td class="text-right">'.$suma.' Bs.</td>
+    //                         </tr></tbody></table>'; 
+    //         }else{
+    //             $html.='<p>No se tiene impresiones</p>';
+    //         }
                
-        }
-        $html.='</div>';
-        $this->view->disable();
-        echo $html;
-    }
+    //     }
+    //     $html.='</div>';
+    //     $this->view->disable();
+    //     echo $html;
+    // }
 
     public function resetimpresionesAction(){
         $model  = new Usuarios();
@@ -280,5 +280,110 @@ class UsuariosController extends ControllerRrhh {
         echo $msm;
     }
 
+      public function savedepositoAction()
+    {
+        if (isset($_POST['id'])) {
+            if ($_POST['id']>0) {
+                $resul = new Impresiones();
+                $resul->usuario_id = $this->request->getPost('id');
+                $resul->fecha_reg = date("Y-m-d H:i:s",strtotime($this->request->getPost('fecha_deposito')));
+                $resul->costo_impresion= $this->request->getPost('deposito');
+                $resul->estado = 0;
+                $resul->baja_logica = 1;
+                if ($resul->save()) {
+                    $msm ='Exito: Se guardo correctamente';
+                }else{
+                    $msm = 'Error: No se guardo el registro';
+                }
+            }
+            
+        }
+    $this->view->disable();
+    echo $msm;
+    }
+
+    public function verimpresionesAction($usuario_id)
+    {
+         $this->assets
+        ->addCss('/jqwidgets/styles/jqx.base.css')
+        ->addCss('/jqwidgets/styles/jqx.custom.css');
+        $this->assets
+        ->addJs('/jqwidgets/jqxcore.js')
+        ->addJs('/jqwidgets/jqxmenu.js')
+        ->addJs('/jqwidgets/jqxdropdownlist.js')
+        ->addJs('/jqwidgets/jqxlistbox.js')
+        ->addJs('/jqwidgets/jqxcheckbox.js')
+        ->addJs('/jqwidgets/jqxscrollbar.js')
+        ->addJs('/jqwidgets/jqxgrid.js')
+        ->addJs('/jqwidgets/jqxdata.js')
+        ->addJs('/jqwidgets/jqxgrid.sort.js')
+        ->addJs('/jqwidgets/jqxgrid.pager.js')
+        ->addJs('/jqwidgets/jqxgrid.filter.js')
+        ->addJs('/jqwidgets/jqxgrid.selection.js')
+        ->addJs('/jqwidgets/jqxgrid.grouping.js')
+        ->addJs('/jqwidgets/jqxgrid.columnsreorder.js')
+        ->addJs('/jqwidgets/jqxgrid.columnsresize.js')
+        ->addJs('/jqwidgets/jqxdatetimeinput.js')
+        ->addJs('/jqwidgets/jqxcalendar.js')
+        ->addJs('/jqwidgets/jqxbuttons.js')
+        ->addJs('/jqwidgets/jqxdata.export.js')
+        ->addJs('/jqwidgets/jqxgrid.export.js')
+        ->addJs('/jqwidgets/globalization/globalize.js')
+        ->addJs('/jqwidgets/jqxgrid.aggregates.js')
+        ->addJs('/scripts/usuarios/verimpresiones.js')
+        ->addJs('/media/plugins/bootbox/bootbox.min.js')
+        ;
+
+        // $resul = Impresiones::find(array("baja_logica = 1 and usuario_id='$usuario_id'","order"=>'fecha_reg ASC'));
+        // $this->view->setVar('impresion',$resul);
+        $usuario = Usuarios::findFirstById($usuario_id);
+        $this->view->setVar('usuario', $usuario);        
+
+    }
+
+    public function listimpresionesAction($usuario_id)
+    {
+        $resul = Impresiones::find(array("baja_logica = 1 and estado = 1 and usuario_id='$usuario_id'","order"=>'fecha_reg ASC'));
+        $customers=array();
+        foreach ($resul as $v) {
+            $customers[] = array(
+                'id'=>$v->id,
+                'usuario_id'=>$v->usuario_id,
+                'costo_impresion'=>$v->costo_impresion,
+                'fecha_reg'=>$v->fecha_reg,
+                'estado'=>$v->estado,
+                );
+        }
+        echo json_encode($customers);
+        $this->view->disable();
+    }
+
+    public function listdepositosAction($usuario_id)
+    {
+        $resul = Impresiones::find(array("baja_logica = 1 and estado = 0 and usuario_id='$usuario_id'","order"=>'fecha_reg ASC'));
+        foreach ($resul as $v) {
+            $customers[] = array(
+                'id'=>$v->id,
+                'usuario_id'=>$v->usuario_id,
+                'costo_impresion'=>$v->costo_impresion,
+                'fecha_reg'=>$v->fecha_reg,
+                'estado'=>$v->estado,
+                );
+        }
+        echo json_encode($customers);
+        $this->view->disable();
+    }
+
+    public function deleteimpresionAction(){
+        $resul = Impresiones::findFirstById($this->request->getPost('id'));
+        $resul->baja_logica = 0;
+        if ($resul->save()) {
+                    $msm ='Exito: Se elimino correctamente';
+                }else{
+                    $msm = 'Error: No se guardo el registro';
+                }
+        $this->view->disable();
+        echo $msm;
+    }
 
 }
