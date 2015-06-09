@@ -178,13 +178,13 @@ $query = $query . $where;
                  $msm =$data[0]." ".$data[1]." ".$data[2]." ".$data[3]." ".$data[4]." ".$data[5]." ".$data[6]."<br>";   
                  $resul = new Bases();
                  $resul->codigo= $data[0];
-                 $resul->ubicacion = $data[1];
-                 $resul->sector = $data[2];
-                 $resul->tipo = $data[3];
-                 $resul->tipo1 = $data[4];
+                 $resul->ubicacion = utf8_encode($data[1]);
+                 $resul->sector = utf8_encode($data[2]);
+                 $resul->tipo = utf8_encode($data[3]);
+                 $resul->tipo1 = utf8_encode($data[4]);
                  $resul->fecha = date("Y-m-d",strtotime($data[5]));
-                 $resul->descripcion = $data[6];
-                 $resul->descripcion1 = $msm;
+                 $resul->descripcion = utf8_encode($data[6]);
+                 $resul->descripcion1 = utf8_encode($msm);
                  $resul->fecha_registro = date("Y-m-d");
                  $resul->usuario_registro = $this->_user->id;
                  $resul->save();
@@ -197,6 +197,7 @@ $query = $query . $where;
      }else{
         echo $msm = 'Error: no es un archivo csv';
     }
+    $this->response->redirect('/bases');
 }
 
 public function listafiltroAction($fecha_inicio,$fecha_fin,$ubicacion,$sector,$tipo,$caracteristica1,$caracteristica2,$caracteristica3,$caracteristica4,$caracteristica5,$nro_publicaciones)
@@ -393,7 +394,7 @@ public function pdfsinhAction()
     $ubicacion = $_POST['ubicacion'];
     $sector = $_POST['sector'];
     $tipo = $_POST['tipo'];
-    $tipo1 = $_POST['tipo1'];
+    //$tipo1 = $_POST['tipo1'];
     $caracteristica1 = $_POST['caracteristica1'];
     $caracteristica2 = $_POST['caracteristica2'];
     $caracteristica3 = $_POST['caracteristica3'];
@@ -402,18 +403,7 @@ public function pdfsinhAction()
     $nro_publicaciones = $_POST['nro_publicaciones'];
 
 
-    $datos['fecha_inicio'] = $_POST['fecha_inicio'];
-    $datos['fecha_fin'] = $_POST['fecha_fin'];
-    $datos['ubicacion'] = $_POST['ubicacion'];
-    $datos['sector'] = $_POST['sector'];
-    $datos['tipo'] = $_POST['tipo'];
-    $datos['tipo1'] = $_POST['tipo1'];
-    $datos['caracteristica1'] = $_POST['caracteristica1'];
-    $datos['caracteristica2'] = $_POST['caracteristica2'];
-    $datos['caracteristica3'] = $_POST['caracteristica3'];
-    $datos['caracteristica4'] = $_POST['caracteristica4'];
-    $datos['caracteristica5'] = $_POST['caracteristica5'];
-    $datos['nro_publicaciones'] = $_POST['nro_publicaciones'];
+   
 }
 
 $where = '';
@@ -485,7 +475,7 @@ $pdf->SetKeywords('TCPDF, PDF, example, test, guide');
 
 // set default header data
 $pdf->SetHeaderData('../../../assets/img/logo.png', PDF_HEADER_LOGO_WIDTH, 'SISTEMA OSVALDO CARLO', 'Contactos - ocarlo@fh.org', array(0,64,255), array(0,64,128));
-$pdf->setFooterData(array(0,64,0), array(0,64,128));
+//$pdf->setFooterData(array(0,64,0), array(0,64,128));
 
 // set header and footer fonts
 $pdf->setHeaderFont(Array(PDF_FONT_NAME_MAIN, '', PDF_FONT_SIZE_MAIN));
@@ -555,7 +545,7 @@ foreach ($resultado as $v) {
 
 
     if($titulo_codigo!=$v->codigo){
-        $pdf->Cell(190,5, 'CODIGO : '.$v->codigo,1, 0 , 'L', $bandera );
+        $pdf->Cell(190,5, 'CODIGO : '.$v->codigo,1, 0 , 'L', $sw );
         $pdf->Ln();//Salto de línea para generar otra fila        
         $titulo_codigo=$v->codigo;
         $i=1;
@@ -631,7 +621,7 @@ public function pdfconhAction()
             $ubicacion = $_POST['ubicacion'];
             $sector = $_POST['sector'];
             $tipo = $_POST['tipo'];
-            $tipo1 = $_POST['tipo1'];
+            //$tipo1 = $_POST['tipo1'];
             $caracteristica1 = $_POST['caracteristica1'];
             $caracteristica2 = $_POST['caracteristica2'];
             $caracteristica3 = $_POST['caracteristica3'];
@@ -640,18 +630,6 @@ public function pdfconhAction()
             $nro_publicaciones = $_POST['nro_publicaciones'];
 
 
-            $datos['fecha_inicio'] = $_POST['fecha_inicio'];
-            $datos['fecha_fin'] = $_POST['fecha_fin'];
-            $datos['ubicacion'] = $_POST['ubicacion'];
-            $datos['sector'] = $_POST['sector'];
-            $datos['tipo'] = $_POST['tipo'];
-            $datos['tipo1'] = $_POST['tipo1'];
-            $datos['caracteristica1'] = $_POST['caracteristica1'];
-            $datos['caracteristica2'] = $_POST['caracteristica2'];
-            $datos['caracteristica3'] = $_POST['caracteristica3'];
-            $datos['caracteristica4'] = $_POST['caracteristica4'];
-            $datos['caracteristica5'] = $_POST['caracteristica5'];
-            $datos['nro_publicaciones'] = $_POST['nro_publicaciones'];
         }
 
 
@@ -719,7 +697,7 @@ $pdf = new TCPDF(PDF_PAGE_ORIENTATION, PDF_UNIT, 'LETTER', true, 'UTF-8', false)
 
 // set default header data
         $pdf->SetHeaderData('../../../assets/img/logo.png', PDF_HEADER_LOGO_WIDTH, 'SISTEMA OSVALDO CARLO', 'Contactos - ocarlo@fh.org', array(0,64,255), array(0,64,128));
-        $pdf->setFooterData(array(0,64,0), array(0,64,128));
+        //$pdf->setFooterData(array(0,64,0), array(0,64,128));
 
 // set header and footer fonts
         $pdf->setHeaderFont(Array(PDF_FONT_NAME_MAIN, '', PDF_FONT_SIZE_MAIN));
@@ -788,7 +766,7 @@ foreach ($resultado as $v) {
      
 
     if($titulo_codigo!=$v->codigo){
-        $pdf->Cell(190,5, 'CODIGO : '.$v->codigo,1, 0 , 'L', $bandera );
+        $pdf->Cell(190,5, 'CODIGO : '.$v->codigo,1, 0 , 'L', $sw );
         $pdf->Ln();//Salto de línea para generar otra fila        
         $titulo_codigo=$v->codigo;
         $i=1;

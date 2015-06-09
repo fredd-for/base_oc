@@ -53,19 +53,22 @@
                                 <div class="form-group">
                                     <label class="col-xs-1 control-label">Busqueda:</label>
                                     <div class="col-xs-3">
-                                        <input type="text" name="fecha_inicio" id="fecha_inicio" class="form-control" data-date-format="dd-mm-yyyy" placeholder="Fecha Inicial (dd-mm-YYYY)" value="<?php echo $datos['fecha_inicio'] ?>" required>
+                                        <input type="text" name="fecha_inicio" id="fecha_inicio" class="form-control" data-date-format="dd-mm-yyyy" placeholder="Fecha Inicial (dd-mm-YYYY)" value="<?php if (count($datos)>0) {
+                                          echo $datos['fecha_inicio']; }  ?>" required>
                                     </div>
                                     <div class="col-xs-1">
                                         a
                                     </div>
                                     <div class="col-xs-3">
-                                        <input type="text" name="fecha_fin" id="fecha_fin" class="form-control"  data-date-format="dd-mm-yyyy" placeholder="Fecha Final (dd-mm-YYYY)" value="<?php echo $datos['fecha_fin'] ?>" required>
+                                        <input type="text" name="fecha_fin" id="fecha_fin" class="form-control"  data-date-format="dd-mm-yyyy" placeholder="Fecha Final (dd-mm-YYYY)" value="<?php if (count($datos)>0) {
+                                          echo $datos['fecha_fin']; }  ?>" required>
                                     </div>
                                     <div class="col-xs-2">
                                         Publicaciones menor a 
                                     </div>
                                     <div class="col-xs-2">
-                                        <input type="number" name="nro_publicaciones" id="nro_publicaciones" placeholder="Numero de Publicaciones" class="form-control" value="10" value="<?php echo $datos['nro_publicaciones'] ?>" required>
+                                        <input type="number" name="nro_publicaciones" id="nro_publicaciones" placeholder="Numero de Publicaciones" class="form-control" value="10" value="<?php if (count($datos)>0) {
+                                          echo $datos['nro_publicaciones']; }  ?>" required>
                                     </div>
                                 </div>
                             </div>
@@ -86,7 +89,7 @@
                                                     $selected = '';
                                                 }
                                             ?>
-                                            <option value="<?php echo $u->ubicacion ?>" <?php echo $selected ?>><?php echo $u->ubicacion ?></option>
+                                            <option value="<?php echo utf8_encode($u->ubicacion) ?>" <?php echo $selected ?>><?php echo utf8_encode($u->ubicacion) ?></option>
                                             <?php } ?>
                                         </select>
                                     </div>
@@ -110,7 +113,8 @@
 
                                     <label class="col-xs-1 control-label">Tipo:</label>
                                     <div class="col-xs-3">
-                                        <input type="text" name="tipo" id="tipo" value="<?php echo $datos['tipo'] ?>" class="form-control">
+                                        <input type="text" name="tipo" id="tipo" value="<?php if (count($datos)>0) {
+                                          echo $datos['tipo']; }  ?>" class="form-control">
                                     </div>
                                 </div>
                             </div>
@@ -122,19 +126,24 @@
                         </div>
                         <div class="row">
                             <div class="col-xs-2">
-                                <input type="text" name="caracteristica1" id="caracteristica1" class="form-control" placeholder="Caracteristica 1" value="<?php echo $datos['caracteristica1'] ?>">
+                                <input type="text" name="caracteristica1" id="caracteristica1" class="form-control" placeholder="Caracteristica 1" value="<?php if (count($datos)>0) {
+                                          echo $datos['caracteristica1']; }  ?>">
                             </div>
                             <div class="col-xs-2">
-                                <input type="text" name="caracteristica2" id="caracteristica2" class="form-control" placeholder="Caracteristica 2" value="<?php echo $datos['caracteristica2'] ?>">
+                                <input type="text" name="caracteristica2" id="caracteristica2" class="form-control" placeholder="Caracteristica 2" value="<?php if (count($datos)>0) {
+                                          echo $datos['caracteristica2']; }  ?>">
                             </div>
                             <div class="col-xs-2">
-                                <input type="text" name="caracteristica3" id="caracteristica3" class="form-control" placeholder="Caracteristica 3" value="<?php echo $datos['caracteristica3'] ?>">
+                                <input type="text" name="caracteristica3" id="caracteristica3" class="form-control" placeholder="Caracteristica 3" value="<?php if (count($datos)>0) {
+                                          echo $datos['caracteristica3']; }  ?>">
                             </div>
                             <div class="col-xs-2">
-                                <input type="text" name="caracteristica4" id="caracteristica4" class="form-control" placeholder="Caracteristica 4" value="<?php echo $datos['caracteristica4'] ?>">
+                                <input type="text" name="caracteristica4" id="caracteristica4" class="form-control" placeholder="Caracteristica 4" value="<?php if (count($datos)>0) {
+                                          echo $datos['caracteristica4']; }  ?>">
                             </div>
                             <div class="col-xs-2">
-                                <input type="text" name="caracteristica5" id="caracteristica5" class="form-control" placeholder="Caracteristica 5" value="<?php echo $datos['caracteristica5'] ?>">
+                                <input type="text" name="caracteristica5" id="caracteristica5" class="form-control" placeholder="Caracteristica 5" value="<?php if (count($datos)>0) {
+                                          echo $datos['caracteristica5']; }  ?>">
                             </div>
                             <div class="col-xs-2">
                                 <div class="pull-right">
@@ -175,9 +184,9 @@
                     <tr>
                         <td class="text-center"><?php echo $v->cantidad ?></td>
                         <td class="text-center"><?php echo $v->cod ?></td>
-                        <td class="text-center"><?php echo $v->fecha_min ?></td>
-                        <td class="text-center"><?php echo $v->fecha_max ?></td>
-                        <td class="text-center"><?php echo $v->fecha ?></td>
+                        <td class="text-center"><?php echo date("d-m-Y",strtotime($v->fecha_min)) ?></td>
+                        <td class="text-center"><?php echo date("d-m-Y",strtotime($v->fecha_max)) ?></td>
+                        <td class="text-center"><?php echo date("d-m-Y",strtotime($v->fecha)) ?></td>
                         <td ><?php echo $v->descripcion ?></td>
                     </tr>    
                     <?php } ?>
@@ -192,9 +201,11 @@
                 <tfoot>
                     <tr class="success">
                         <td class="text-center" colspan="2" ><b>Nro de Avisos</b></td>
-                        <td class="text-center"><input type="text" name="nro_avisos" value="<?php echo $nro_avisos->cantidad ?>"></td>
+                        <td class="text-center"><input type="text" name="nro_avisos" value="<?php if (count($nro_avisos)>0) {
+                          echo  $nro_avisos->cantidad;    }   ?>"></td>
                         <td class="text-center"><b>Nro de Paginas</b></td>
-                        <td colspan="2"><?php echo  $nro_avisos->cantidad/22  ?></td>
+                        <td colspan="2"><?php if (count($nro_avisos)>0) {
+                          echo  $nro_avisos->cantidad/22;    }   ?></td>
                         </tr>    
                 </tfoot>
             </table>

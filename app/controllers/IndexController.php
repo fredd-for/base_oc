@@ -82,7 +82,7 @@ class IndexController extends ControllerRrhh {
 FROM bases 
 GROUP BY codigo) as v , bases b 
 WHERE v.cod = b.codigo ".$where.$where_or."
- ORDER BY v.cantidad DESC LIMIT 5";
+ ORDER BY v.cantidad DESC LIMIT 3";
  
 $this->view->setVar('sql', $query);
 
@@ -142,7 +142,9 @@ $this->view->setVar('sector', $sector);
 $this->view->setVar('usuario', $this->_user);
 $this->view->setVar('datos', $datos);
 $this->view->setVar('resultado', $resultado);
-$this->view->setVar('nro_avisos', $nro_avisos[0]);
+
+    $this->view->setVar('nro_avisos', $nro_avisos[0]);
+
 
 }
 
