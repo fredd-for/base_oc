@@ -13,11 +13,10 @@ class Usuarios extends \Phalcon\Mvc\Model {
 
     public function lista() {
         //$this->setConnectionService('db');
-        $sql = "SELECT u.*, SUM(costo_impresion) as total_cobro
-        FROM usuarios u
-        LEFT JOIN impresiones i ON u.id = i.usuario_id AND i.baja_logica= 1 AND i.estado = 1
-        WHERE u.baja_logica = 1 
-        GROUP BY u.id";
+        $sql = "SELECT u.*, 
+(SELECT COALESCE(SUM(costo_impresion),0) FROM impresiones WHERE usuario_id=u.id AND baja_logica=1 AND estado=1) - (SELECT COALESCE(SUM(costo_impresion),0) FROM impresiones WHERE usuario_id=u.id AND baja_logica=1 AND estado=0) as total_cobro
+FROM usuarios u
+WHERE u.baja_logica = 1 ";
         $users = new Usuarios();
         return new Resultset(null, $users, $users->getReadConnection()->query($sql));
     }

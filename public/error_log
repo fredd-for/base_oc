@@ -1,0 +1,60 @@
+[12-Aug-2015 20:30:41 UTC] PHP Warning:  include(/home/miiopmhp/public_html/public/app/config/config.php): failed to open stream: No such file or directory in /home/miiopmhp/public_html/public/index.php on line 10
+[12-Aug-2015 20:30:41 UTC] PHP Stack trace:
+[12-Aug-2015 20:30:41 UTC] PHP   1. {main}() /home/miiopmhp/public_html/public/index.php:0
+[12-Aug-2015 20:30:41 UTC] PHP Warning:  include(/home/miiopmhp/public_html/public/app/config/config.php): failed to open stream: No such file or directory in /home/miiopmhp/public_html/public/index.php on line 10
+[12-Aug-2015 20:30:41 UTC] PHP Stack trace:
+[12-Aug-2015 20:30:41 UTC] PHP   1. {main}() /home/miiopmhp/public_html/public/index.php:0
+[12-Aug-2015 20:30:41 UTC] PHP Warning:  include(): Failed opening '/home/miiopmhp/public_html/public/app/config/config.php' for inclusion (include_path='.:/opt/alt/php55/usr/share/pear:/opt/alt/php55/usr/share/php') in /home/miiopmhp/public_html/public/index.php on line 10
+[12-Aug-2015 20:30:41 UTC] PHP Stack trace:
+[12-Aug-2015 20:30:41 UTC] PHP   1. {main}() /home/miiopmhp/public_html/public/index.php:0
+[12-Aug-2015 20:30:41 UTC] PHP Warning:  include(/home/miiopmhp/public_html/public/app/config/loader.php): failed to open stream: No such file or directory in /home/miiopmhp/public_html/public/index.php on line 15
+[12-Aug-2015 20:30:41 UTC] PHP Stack trace:
+[12-Aug-2015 20:30:41 UTC] PHP   1. {main}() /home/miiopmhp/public_html/public/index.php:0
+[12-Aug-2015 20:30:41 UTC] PHP Warning:  include(/home/miiopmhp/public_html/public/app/config/loader.php): failed to open stream: No such file or directory in /home/miiopmhp/public_html/public/index.php on line 15
+[12-Aug-2015 20:30:41 UTC] PHP Stack trace:
+[12-Aug-2015 20:30:41 UTC] PHP   1. {main}() /home/miiopmhp/public_html/public/index.php:0
+[12-Aug-2015 20:30:41 UTC] PHP Warning:  include(): Failed opening '/home/miiopmhp/public_html/public/app/config/loader.php' for inclusion (include_path='.:/opt/alt/php55/usr/share/pear:/opt/alt/php55/usr/share/php') in /home/miiopmhp/public_html/public/index.php on line 15
+[12-Aug-2015 20:30:41 UTC] PHP Stack trace:
+[12-Aug-2015 20:30:41 UTC] PHP   1. {main}() /home/miiopmhp/public_html/public/index.php:0
+[12-Aug-2015 20:30:41 UTC] PHP Warning:  include(/home/miiopmhp/public_html/public/app/config/services.php): failed to open stream: No such file or directory in /home/miiopmhp/public_html/public/index.php on line 20
+[12-Aug-2015 20:30:41 UTC] PHP Stack trace:
+[12-Aug-2015 20:30:41 UTC] PHP   1. {main}() /home/miiopmhp/public_html/public/index.php:0
+[12-Aug-2015 20:30:41 UTC] PHP Warning:  include(/home/miiopmhp/public_html/public/app/config/services.php): failed to open stream: No such file or directory in /home/miiopmhp/public_html/public/index.php on line 20
+[12-Aug-2015 20:30:41 UTC] PHP Stack trace:
+[12-Aug-2015 20:30:41 UTC] PHP   1. {main}() /home/miiopmhp/public_html/public/index.php:0
+[12-Aug-2015 20:30:41 UTC] PHP Warning:  include(): Failed opening '/home/miiopmhp/public_html/public/app/config/services.php' for inclusion (include_path='.:/opt/alt/php55/usr/share/pear:/opt/alt/php55/usr/share/php') in /home/miiopmhp/public_html/public/index.php on line 20
+[12-Aug-2015 20:30:41 UTC] PHP Stack trace:
+[12-Aug-2015 20:30:41 UTC] PHP   1. {main}() /home/miiopmhp/public_html/public/index.php:0
+[12-Aug-2015 20:30:41 UTC] PHP Notice:  Undefined variable: di in /home/miiopmhp/public_html/public/index.php on line 25
+[12-Aug-2015 20:30:41 UTC] PHP Stack trace:
+[12-Aug-2015 20:30:41 UTC] PHP   1. {main}() /home/miiopmhp/public_html/public/index.php:0
+[13-Aug-2015 12:41:08 UTC] PHP Warning:  include(/home/miiopmhp/public_html/public/app/config/config.php): failed to open stream: No such file or directory in /home/miiopmhp/public_html/public/index.php on line 10
+[13-Aug-2015 12:41:08 UTC] PHP Stack trace:
+[13-Aug-2015 12:41:08 UTC] PHP   1. {main}() /home/miiopmhp/public_html/public/index.php:0
+[13-Aug-2015 12:41:08 UTC] PHP Warning:  include(/home/miiopmhp/public_html/public/app/config/config.php): failed to open stream: No such file or directory in /home/miiopmhp/public_html/public/index.php on line 10
+[13-Aug-2015 12:41:08 UTC] PHP Stack trace:
+[13-Aug-2015 12:41:08 UTC] PHP   1. {main}() /home/miiopmhp/public_html/public/index.php:0
+[13-Aug-2015 12:41:08 UTC] PHP Warning:  include(): Failed opening '/home/miiopmhp/public_html/public/app/config/config.php' for inclusion (include_path='.:/opt/alt/php56/usr/share/pear:/opt/alt/php56/usr/share/php') in /home/miiopmhp/public_html/public/index.php on line 10
+[13-Aug-2015 12:41:08 UTC] PHP Stack trace:
+[13-Aug-2015 12:41:08 UTC] PHP   1. {main}() /home/miiopmhp/public_html/public/index.php:0
+[13-Aug-2015 12:41:08 UTC] PHP Warning:  include(/home/miiopmhp/public_html/public/app/config/loader.php): failed to open stream: No such file or directory in /home/miiopmhp/public_html/public/index.php on line 15
+[13-Aug-2015 12:41:08 UTC] PHP Stack trace:
+[13-Aug-2015 12:41:08 UTC] PHP   1. {main}() /home/miiopmhp/public_html/public/index.php:0
+[13-Aug-2015 12:41:08 UTC] PHP Warning:  include(/home/miiopmhp/public_html/public/app/config/loader.php): failed to open stream: No such file or directory in /home/miiopmhp/public_html/public/index.php on line 15
+[13-Aug-2015 12:41:08 UTC] PHP Stack trace:
+[13-Aug-2015 12:41:08 UTC] PHP   1. {main}() /home/miiopmhp/public_html/public/index.php:0
+[13-Aug-2015 12:41:08 UTC] PHP Warning:  include(): Failed opening '/home/miiopmhp/public_html/public/app/config/loader.php' for inclusion (include_path='.:/opt/alt/php56/usr/share/pear:/opt/alt/php56/usr/share/php') in /home/miiopmhp/public_html/public/index.php on line 15
+[13-Aug-2015 12:41:08 UTC] PHP Stack trace:
+[13-Aug-2015 12:41:08 UTC] PHP   1. {main}() /home/miiopmhp/public_html/public/index.php:0
+[13-Aug-2015 12:41:08 UTC] PHP Warning:  include(/home/miiopmhp/public_html/public/app/config/services.php): failed to open stream: No such file or directory in /home/miiopmhp/public_html/public/index.php on line 20
+[13-Aug-2015 12:41:08 UTC] PHP Stack trace:
+[13-Aug-2015 12:41:08 UTC] PHP   1. {main}() /home/miiopmhp/public_html/public/index.php:0
+[13-Aug-2015 12:41:08 UTC] PHP Warning:  include(/home/miiopmhp/public_html/public/app/config/services.php): failed to open stream: No such file or directory in /home/miiopmhp/public_html/public/index.php on line 20
+[13-Aug-2015 12:41:08 UTC] PHP Stack trace:
+[13-Aug-2015 12:41:08 UTC] PHP   1. {main}() /home/miiopmhp/public_html/public/index.php:0
+[13-Aug-2015 12:41:08 UTC] PHP Warning:  include(): Failed opening '/home/miiopmhp/public_html/public/app/config/services.php' for inclusion (include_path='.:/opt/alt/php56/usr/share/pear:/opt/alt/php56/usr/share/php') in /home/miiopmhp/public_html/public/index.php on line 20
+[13-Aug-2015 12:41:08 UTC] PHP Stack trace:
+[13-Aug-2015 12:41:08 UTC] PHP   1. {main}() /home/miiopmhp/public_html/public/index.php:0
+[13-Aug-2015 12:41:08 UTC] PHP Notice:  Undefined variable: di in /home/miiopmhp/public_html/public/index.php on line 25
+[13-Aug-2015 12:41:08 UTC] PHP Stack trace:
+[13-Aug-2015 12:41:08 UTC] PHP   1. {main}() /home/miiopmhp/public_html/public/index.php:0

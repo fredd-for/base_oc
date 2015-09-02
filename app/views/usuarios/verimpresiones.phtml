@@ -1,0 +1,70 @@
+<div class="row">
+	<div class="col-sm-12">
+		<div class="panel">
+			<div class="panel-heading">
+				<h4><?php echo $usuario->nombre.' '.$usuario->paterno ?></h4>
+				<div class="options">
+					<ul class="nav nav-tabs">
+						<li class="active"><a data-toggle="tab" href="#domshortcuttiles"><i class="fa fa-users"></i></a></li>
+						<li><a data-toggle="tab" href="#codeshortcuttiles"><i class="fa fa-code"></i></a></li>
+					</ul>
+				</div>
+			</div>
+			<div class="panel-body">
+				<div class="tab-content">
+					<div class="row">
+						<div class="col-md-12">
+							<?php  echo $this->flashSession->output(); ?>
+							<div id="divMsjeExito" class="msjs-alert" hidden="hidden">
+								<button class="close" aria-hidden="true" data-dismiss="alert" type="button">×</button>
+								<h5>
+									<i class="fa fa-check-circle"></i>
+									<!-- &Eacute;xito! -->
+									<a class="alert-link" href="javascript:void(0)" id="aMsjeExito"></a>
+								</h5>
+								
+							</div>
+						</div>
+					</div>
+					<div class="row">
+					<input type="hidden" name="usuario_id" id="usuario_id" value="<?php echo $usuario->id ?>">
+					<input type="hidden" name="total_impresion" id="total_impresion" value="">
+					<input type="hidden" name="total_deposito" id="total_deposito" value="">
+					<div class="col-md-6">
+					<?php if ($user->nivel ==2) { ?>
+						<div class="row">
+						<div class="col-md-12">
+							<div class="pull-left">
+                				<button class="btn btn-sm btn-danger" type="button" id="delete_impresion"><i class="fa fa-trash-o fa-fw"></i> Eliminar</button>
+							</div>
+						</div>
+					</div>	
+					<?php } ?>
+					
+						<div id="jqxgrid_impresiones" style="height: 550px; width: 100%;" ></div>
+					</div>
+					<div class="col-md-6">
+					<?php if ($user->nivel ==2) { ?>
+					<div class="row">
+						<div class="col-md-12">
+							<div class="pull-left">
+                				<button class="btn btn-sm btn-danger" type="button" id="delete_deposito"><i class="fa fa-trash-o fa-fw"></i> Eliminar</button>
+							</div>
+						</div>
+					</div>
+					<?php } ?>
+						<div id="jqxgrid_depositos" style="height: 550px; width: 100%;" ></div>
+					</div>
+						
+					</div>
+					<div class="row">
+						<div class="col-md-12">
+							<b>Saldo Bs.</b><strong id='saldo'></strong>
+						</div>
+					</div>
+
+				</div>
+			</div>
+		</div>
+	</div>
+</div>

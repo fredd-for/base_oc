@@ -1,0 +1,3 @@
+[13-Aug-2015 06:26:27 UTC] PHP Fatal error:  Using $this when not in object context in /home/miiopmhp/public_html/base_oc/app/views/index.phtml on line 5
+[13-Aug-2015 06:26:27 UTC] PHP Stack trace:
+[13-Aug-2015 06:26:27 UTC] PHP   1. {main}() /home/miiopmhp/public_html/base_oc/app/views/index.phtml:0
