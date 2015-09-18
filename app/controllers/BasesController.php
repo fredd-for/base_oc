@@ -206,169 +206,169 @@ $query = $query . $where;
     $this->response->redirect('/bases');
 }
 
-public function listafiltroAction($fecha_inicio,$fecha_fin,$ubicacion,$sector,$tipo,$caracteristica1,$caracteristica2,$caracteristica3,$caracteristica4,$caracteristica5,$nro_publicaciones)
-{
-         //echo "caracteristica1=>".$caracteristica1;
-    $where = '';
-    $where_or = '';
-    if ($fecha_inicio!='') {
-        $fecha_inicio = date("Y-m-d",strtotime($fecha_inicio));
-        $fecha_fin = date("Y-m-d",strtotime($fecha_fin));
-        $where.= " AND fecha BETWEEN '$fecha_inicio' AND '$fecha_fin' ";
-    }
-    if ($ubicacion!='0') {
-        $where.= " AND ubicacion='$ubicacion' ";   
-    }
-    if ($sector!='0') {
-        $where.= " AND sector='$sector' ";   
-    }
-    if ($tipo!='0') {
-        $where.= " AND tipo='$tipo' ";   
-    }
-    if ($caracteristica1!='0') {
-        $where.= " AND descripcion1 LIKE '%".$caracteristica1."%'";
-    }
-    if ($caracteristica2!='0') {
-        $where.= " AND descripcion1 LIKE '%".$caracteristica2."%'";
-    }
-    if ($caracteristica3!='0') {
-        $where.= " AND descripcion1 LIKE '%".$caracteristica3."%'";
-    }
-    if ($caracteristica4!='0') {
-        $where.= " AND descripcion1 LIKE '%".$caracteristica4."%'";
-    }
-    if ($caracteristica5!='0') {
-        $where.= " AND descripcion1 LIKE '%".$caracteristica5."%'";
-    }
-    if ($nro_publicaciones!='') {
-        $where.= " AND v.cantidad <= '$nro_publicaciones'";
-    }
+// public function listafiltroAction($fecha_inicio,$fecha_fin,$ubicacion,$sector,$tipo,$caracteristica1,$caracteristica2,$caracteristica3,$caracteristica4,$caracteristica5,$nro_publicaciones)
+// {
+//          //echo "caracteristica1=>".$caracteristica1;
+//     $where = '';
+//     $where_or = '';
+//     if ($fecha_inicio!='') {
+//         $fecha_inicio = date("Y-m-d",strtotime($fecha_inicio));
+//         $fecha_fin = date("Y-m-d",strtotime($fecha_fin));
+//         $where.= " AND fecha BETWEEN '$fecha_inicio' AND '$fecha_fin' ";
+//     }
+//     if ($ubicacion!='0') {
+//         $where.= " AND ubicacion='$ubicacion' ";   
+//     }
+//     if ($sector!='0') {
+//         $where.= " AND sector='$sector' ";   
+//     }
+//     if ($tipo!='0') {
+//         $where.= " AND tipo='$tipo' ";   
+//     }
+//     if ($caracteristica1!='0') {
+//         $where.= " AND descripcion1 LIKE '%".$caracteristica1."%'";
+//     }
+//     if ($caracteristica2!='0') {
+//         $where.= " AND descripcion1 LIKE '%".$caracteristica2."%'";
+//     }
+//     if ($caracteristica3!='0') {
+//         $where.= " AND descripcion1 LIKE '%".$caracteristica3."%'";
+//     }
+//     if ($caracteristica4!='0') {
+//         $where.= " AND descripcion1 LIKE '%".$caracteristica4."%'";
+//     }
+//     if ($caracteristica5!='0') {
+//         $where.= " AND descripcion1 LIKE '%".$caracteristica5."%'";
+//     }
+//     if ($nro_publicaciones!='') {
+//         $where.= " AND v.cantidad <= '$nro_publicaciones'";
+//     }
 
 
      
-    $sql= "SELECT v.*, b.* FROM
-    (SELECT codigo as cod, COUNT(codigo) as cantidad, MIN(fecha) as fecha_min,MAX(fecha) as  fecha_max
-        FROM bases 
-        GROUP BY codigo) as v , bases b 
-WHERE v.cod = b.codigo ".$where.$where_or."
-ORDER BY v.cantidad DESC";
-        //echo "where =>".$sql;
-$pagenum = $_GET['pagenum'];
-$pagesize = $_GET['pagesize'];
-$start = $pagenum * $pagesize;
-$query = "SELECT * FROM (".$sql.") as v ";
+//     $sql= "SELECT v.*, b.* FROM
+//     (SELECT codigo as cod, COUNT(codigo) as cantidad, MIN(fecha) as fecha_min,MAX(fecha) as  fecha_max
+//         FROM bases 
+//         GROUP BY codigo) as v , bases b 
+// WHERE v.cod = b.codigo ".$where.$where_or."
+// ORDER BY v.cantidad DESC";
+//         //echo "where =>".$sql;
+// $pagenum = $_GET['pagenum'];
+// $pagesize = $_GET['pagesize'];
+// $start = $pagenum * $pagesize;
+// $query = "SELECT * FROM (".$sql.") as v ";
 
-if (isset($_GET['filterscount']))
-{
-    $filterscount = $_GET['filterscount'];
-    if ($filterscount > 0)
-    {
-        $where = " WHERE (";
-            $tmpdatafield = "";
-            $tmpfilteroperator = "";
+// if (isset($_GET['filterscount']))
+// {
+//     $filterscount = $_GET['filterscount'];
+//     if ($filterscount > 0)
+//     {
+//         $where = " WHERE (";
+//             $tmpdatafield = "";
+//             $tmpfilteroperator = "";
 
-            for ($i=0; $i < $filterscount; $i++)
-            {
-                // get the filter's value.
-                $filtervalue = $_GET["filtervalue" . $i];
-                // get the filter's condition.
-                $filtercondition = $_GET["filtercondition" . $i];
-                // get the filter's column.
-                $filterdatafield = $_GET["filterdatafield" . $i];
-                // get the filter's operator.
-                $filteroperator = $_GET["filteroperator" . $i];
+//             for ($i=0; $i < $filterscount; $i++)
+//             {
+//                 // get the filter's value.
+//                 $filtervalue = $_GET["filtervalue" . $i];
+//                 // get the filter's condition.
+//                 $filtercondition = $_GET["filtercondition" . $i];
+//                 // get the filter's column.
+//                 $filterdatafield = $_GET["filterdatafield" . $i];
+//                 // get the filter's operator.
+//                 $filteroperator = $_GET["filteroperator" . $i];
 
-                if ($tmpdatafield == ""){
-                    $tmpdatafield = $filterdatafield;
-                }else if($tmpdatafield <> $filterdatafield){ 
-                    $where .= ")AND(";
-                }else if ($tmpdatafield == $filterdatafield){
-                    if ($tmpfilteroperator == 0){ 
-                        $where .= " AND ";
-                    }else { 
-                        $where .= " OR ";
-                    }                   
-                }
-                switch($filtercondition){
-                    case "CONTAINS":$where .= " " . $filterdatafield . " LIKE '%" . $filtervalue ."%'";
-                    break;
-                    case "DOES_NOT_CONTAIN":$where .= " " . $filterdatafield . " NOT LIKE '%" . $filtervalue ."%'";
-                    break;
-                    case "EQUAL": $where .= " " . $filterdatafield . " = '" . $filtervalue ."'";
-                    break; 
-                    case "NOT_EQUAL":$where .= " " . $filterdatafield . " <> '" . $filtervalue ."'";
-                    break;
-                    case "GREATER_THAN": $where .= " " . $filterdatafield . " > '" . $filtervalue ."'";
-                    break; 
-                    case "LESS_THAN": $where .= " " . $filterdatafield . " < '" . $filtervalue ."'";
-                    break;
-                    case "GREATER_THAN_OR_EQUAL":$where .= " " . $filterdatafield . " >= '" . $filtervalue ."'";
-                    break;
-                    case "LESS_THAN_OR_EQUAL": $where .= " " . $filterdatafield . " <= '" . $filtervalue ."'";
-                    break;
-                    case "STARTS_WITH": $where .= " " . $filterdatafield . " LIKE '" . $filtervalue ."%'";
-                    break;
-                    case "ENDS_WITH": $where .= " " . $filterdatafield . " LIKE '%" . $filtervalue ."'";
-                    break;
-                }
-                if ($i == $filterscount - 1){
-                    $where .= ")";
-}
-$tmpfilteroperator = $filteroperator;
-$tmpdatafield = $filterdatafield;
-}
+//                 if ($tmpdatafield == ""){
+//                     $tmpdatafield = $filterdatafield;
+//                 }else if($tmpdatafield <> $filterdatafield){ 
+//                     $where .= ")AND(";
+//                 }else if ($tmpdatafield == $filterdatafield){
+//                     if ($tmpfilteroperator == 0){ 
+//                         $where .= " AND ";
+//                     }else { 
+//                         $where .= " OR ";
+//                     }                   
+//                 }
+//                 switch($filtercondition){
+//                     case "CONTAINS":$where .= " " . $filterdatafield . " LIKE '%" . $filtervalue ."%'";
+//                     break;
+//                     case "DOES_NOT_CONTAIN":$where .= " " . $filterdatafield . " NOT LIKE '%" . $filtervalue ."%'";
+//                     break;
+//                     case "EQUAL": $where .= " " . $filterdatafield . " = '" . $filtervalue ."'";
+//                     break; 
+//                     case "NOT_EQUAL":$where .= " " . $filterdatafield . " <> '" . $filtervalue ."'";
+//                     break;
+//                     case "GREATER_THAN": $where .= " " . $filterdatafield . " > '" . $filtervalue ."'";
+//                     break; 
+//                     case "LESS_THAN": $where .= " " . $filterdatafield . " < '" . $filtervalue ."'";
+//                     break;
+//                     case "GREATER_THAN_OR_EQUAL":$where .= " " . $filterdatafield . " >= '" . $filtervalue ."'";
+//                     break;
+//                     case "LESS_THAN_OR_EQUAL": $where .= " " . $filterdatafield . " <= '" . $filtervalue ."'";
+//                     break;
+//                     case "STARTS_WITH": $where .= " " . $filterdatafield . " LIKE '" . $filtervalue ."%'";
+//                     break;
+//                     case "ENDS_WITH": $where .= " " . $filterdatafield . " LIKE '%" . $filtervalue ."'";
+//                     break;
+//                 }
+//                 if ($i == $filterscount - 1){
+//                     $where .= ")";
+// }
+// $tmpfilteroperator = $filteroperator;
+// $tmpdatafield = $filterdatafield;
+// }
 
-$query = $query . $where;
-}
-}
+// $query = $query . $where;
+// }
+// }
 
-        /*
-        ordenamos
-         */ 
-        if (isset($_GET['sortdatafield']))
-        {
-            $sortfield = $_GET['sortdatafield'];
-            $sortorder = $_GET['sortorder'];
-            if ($sortfield != NULL)
-            {
-                $query = $query." ORDER BY" . " " . $sortfield . " ".$sortorder;
-            }
+//         /*
+//         ordenamos
+//          */ 
+//         if (isset($_GET['sortdatafield']))
+//         {
+//             $sortfield = $_GET['sortdatafield'];
+//             $sortorder = $_GET['sortorder'];
+//             if ($sortfield != NULL)
+//             {
+//                 $query = $query." ORDER BY" . " " . $sortfield . " ".$sortorder;
+//             }
             
-        }
+//         }
         
-        $model = new Bases();
-        $resul = $model->serverlista($query);
-        $total_rows = count($resul);
+//         $model = new Bases();
+//         $resul = $model->serverlista($query);
+//         $total_rows = count($resul);
 
-        $query=$query." LIMIT $start, $pagesize ";
-        $model = new Bases();
-        $resul = $model->serverlista($query);
-         // $customers[] = array();
-        $this->view->disable();
-        foreach ($resul as $v) {
-            // echo 'cantidad =>'.$v->cantidad;
-            $customers[] = array(
-                'id'=>$v->id,
-                'cantidad'=>$v->cantidad,
-                'fecha_min'=>$v->fecha_min.' 00:00:00',
-                'fecha_max'=>$v->fecha_max.' 00:00:00',
-                'codigo'=>$v->codigo,
-                'ubicacion'=>$v->ubicacion,
-                'sector'=>$v->sector,
-                'fecha'=>$v->fecha.' 00:00:00',
-                'tipo'=>$v->tipo,
-                'tipo1'=>$v->tipo1,
-                'descripcion'=>$v->descripcion,
-                'descripcion1'=> $v->descripcion1,
-                'fecha_registro'=>$v->fecha_registro,
-                'usuario_registro'=>$v->usuario_registro,
-                );
-        }
-        $data[] = array('TotalRows' => $total_rows,'Rows' => $customers);
-        echo json_encode($data);
+//         $query=$query." LIMIT $start, $pagesize ";
+//         $model = new Bases();
+//         $resul = $model->serverlista($query);
+//          // $customers[] = array();
+//         $this->view->disable();
+//         foreach ($resul as $v) {
+//             // echo 'cantidad =>'.$v->cantidad;
+//             $customers[] = array(
+//                 'id'=>$v->id,
+//                 'cantidad'=>$v->cantidad,
+//                 'fecha_min'=>$v->fecha_min.' 00:00:00',
+//                 'fecha_max'=>$v->fecha_max.' 00:00:00',
+//                 'codigo'=>$v->codigo,
+//                 'ubicacion'=>$v->ubicacion,
+//                 'sector'=>$v->sector,
+//                 'fecha'=>$v->fecha.' 00:00:00',
+//                 'tipo'=>$v->tipo,
+//                 'tipo1'=>$v->tipo1,
+//                 'descripcion'=>$v->descripcion,
+//                 'descripcion1'=> $v->descripcion1,
+//                 'fecha_registro'=>$v->fecha_registro,
+//                 'usuario_registro'=>$v->usuario_registro,
+//                 );
+//         }
+//         $data[] = array('TotalRows' => $total_rows,'Rows' => $customers);
+//         echo json_encode($data);
         
 
-    }
+//     }
 
 
     public function deleteAction(){
@@ -407,70 +407,71 @@ public function pdfsinhAction()
     $caracteristica4 = $_POST['caracteristica4'];
     $caracteristica5 = $_POST['caracteristica5'];
     $nro_publicaciones = $_POST['nro_publicaciones'];
+    }
 
-
-   
-}
 
 $where = '';
-$where_or = '';
+// $where_or = '';
 $filtrado = '';
 
 if ($_POST['fecha_inicio']!='') {
     $fecha_inicio = date("Y-m-d",strtotime($fecha_inicio));
     $fecha_fin = date("Y-m-d",strtotime($fecha_fin));
-    $where.= " AND fecha BETWEEN '$fecha_inicio' AND '$fecha_fin' ";
+    $where.= " AND b1.fecha BETWEEN '$fecha_inicio' AND '$fecha_fin' ";
 }
 if ($ubicacion!='0') {
-    $where.= " AND ubicacion='$ubicacion' ";  
+    $where.= " AND b1.ubicacion='$ubicacion' ";  
     $filtrado .= $ubicacion.' * '; 
 }
 if ($sector!='0') {
-    $where.= " AND sector='$sector' ";   
+    $where.= " AND b1.sector='$sector' ";   
     $filtrado .= $sector.' * ';
 }
-if ($tipo!='') {
-    $where.= " AND tipo='$tipo' ";   
+if ($tipo!='0') {
+    $where.= " AND b1.tipo='$tipo' ";   
     $filtrado .= $tipo.' * ';
 }
 if ($caracteristica1!='') {
-    $where.= " AND descripcion1 LIKE '%".$caracteristica1."%'";
+    $where.= " AND b1.descripcion1 LIKE '%".$caracteristica1."%'";
     $filtrado .= $caracteristica1.' * ';
 }
 if ($caracteristica2!='') {
-    $where.= " AND descripcion1 LIKE '%".$caracteristica2."%'";
+    $where.= " AND b1.descripcion1 LIKE '%".$caracteristica2."%'";
     $filtrado .= $caracteristica2.' * ';
 }
 if ($caracteristica3!='') {
-    $where.= " AND descripcion1 LIKE '%".$caracteristica3."%'";
+    $where.= " AND b1.descripcion1 LIKE '%".$caracteristica3."%'";
     $filtrado .= $caracteristica3.' * ';
 }
 if ($caracteristica4!='') {
-    $where.= " AND descripcion1 LIKE '%".$caracteristica4."%'";
+    $where.= " AND b1.descripcion1 LIKE '%".$caracteristica4."%'";
     $filtrado .= $caracteristica4.' * ';
 }
 if ($caracteristica5!='') {
-    $where.= " AND descripcion1 LIKE '%".$caracteristica5."%'";
+    $where.= " AND b1.descripcion1 LIKE '%".$caracteristica5."%'";
     $filtrado .= $caracteristica5.' * ';
 }
 if ($nro_publicaciones!='') {
-    $where.= " AND v.cantidad <= '$nro_publicaciones'";
+    $where.= " AND b2.nro_publicaciones <= ".$nro_publicaciones;
 }
 
 
 
-$query= "SELECT v.*, b.* FROM
-(SELECT codigo as cod, COUNT(codigo) as cantidad, MIN(fecha) as fecha_min,MAX(fecha) as  fecha_max 
-    FROM bases 
-    GROUP BY codigo) as v , bases b 
-WHERE v.cod = b.codigo ".$where.$where_or."
-ORDER BY v.cod DESC ";
+// $query= "SELECT v.*, b.* FROM
+// (SELECT codigo as cod, COUNT(codigo) as cantidad, MIN(fecha) as fecha_min,MAX(fecha) as  fecha_max 
+//     FROM bases 
+//     GROUP BY codigo) as v , bases b 
+// WHERE v.cod = b.codigo ".$where.$where_or."
+// ORDER BY v.cod DESC ";
+
+$query="SELECT b1.*,b2.fecha_min,b2.fecha_max,b2.nro_publicaciones FROM bases b1,base_agrupados b2 
+WHERE b1.codigo=b2.codigo  ".$where;
 $model = new Bases();
 $resultado = $model->serverlista($query);
 
 
     
-$pdf = new TCPDF(PDF_PAGE_ORIENTATION, PDF_UNIT, 'LETTER', true, 'UTF-8', false);
+$pdf = new tcpdf(PDF_PAGE_ORIENTATION, PDF_UNIT, 'LETTER', true, 'UTF-8', false);
 
 // set document information
 $pdf->SetCreator(PDF_CREATOR);
@@ -547,11 +548,8 @@ $i=1;
 $titulo_codigo = '';
 
 foreach ($resultado as $v) {
-
-
-
     if($titulo_codigo!=$v->codigo){
-        $pdf->Cell(190,5, 'CODIGO : '.$v->codigo . ' >> Nro PUBLICACIONES: '.$v->cantidad . ' >> FECHA MIN. PUB.: '.date("d-m-Y",strtotime($v->fecha_min)) . ' >> FECHA MAX. PUB.: '.date("d-m-Y",strtotime($v->fecha_max)),1, 0 , 'L', 1 );
+        $pdf->Cell(190,5, 'CODIGO : '.$v->codigo . ' >> Nro PUBLICACIONES: '.$v->nro_publicaciones . ' >> FECHA MIN. PUB.: '.date("d-m-Y",strtotime($v->fecha_min)) . ' >> FECHA MAX. PUB.: '.date("d-m-Y",strtotime($v->fecha_max)),1, 0 , 'L', 1 );
         $pdf->Ln();//Salto de línea para generar otra fila        
         $titulo_codigo=$v->codigo;
         $i=1;
@@ -645,54 +643,58 @@ $where = '';
     if ($fecha_inicio!='') {
         $fecha_inicio = date("Y-m-d",strtotime($fecha_inicio));
         $fecha_fin = date("Y-m-d",strtotime($fecha_fin));
-        $where.= " AND fecha BETWEEN '$fecha_inicio' AND '$fecha_fin' ";
+        $where.= " AND b1.fecha BETWEEN '$fecha_inicio' AND '$fecha_fin' ";
     }
     if ($ubicacion!='0') {
-        $where.= " AND ubicacion='$ubicacion' "; 
+        $where.= " AND b1.ubicacion='$ubicacion' "; 
         $filtrado .= $ubicacion.' * ';  
     }
     if ($sector!='0') {
-        $where.= " AND sector='$sector' ";   
+        $where.= " AND b1.sector='$sector' ";   
         $filtrado .= $sector.' * ';
     }
-    if ($tipo!='') {
-        $where.= " AND tipo='$tipo' ";   
+    if ($tipo!='0') {
+        $where.= " AND b1.tipo='$tipo' ";   
     }
     if ($caracteristica1!='') {
-        $where.= " AND descripcion1 LIKE '%".$caracteristica1."%'";
+        $where.= " AND b1.descripcion1 LIKE '%".$caracteristica1."%'";
         $filtrado .= $caracteristica1.' * ';
     }
     if ($caracteristica2!='') {
-        $where.= " AND descripcion1 LIKE '%".$caracteristica2."%'";
+        $where.= " AND b1.descripcion1 LIKE '%".$caracteristica2."%'";
         $filtrado .= $caracteristica2.' * ';
     }
     if ($caracteristica3!='') {
-        $where.= " AND descripcion1 LIKE '%".$caracteristica3."%'";
+        $where.= " AND b1.descripcion1 LIKE '%".$caracteristica3."%'";
         $filtrado .= $caracteristica3.' * ';
     }
     if ($caracteristica4!='') {
-        $where.= " AND descripcion1 LIKE '%".$caracteristica4."%'";
+        $where.= " AND b1.descripcion1 LIKE '%".$caracteristica4."%'";
         $filtrado .= $caracteristica4.' * ';
     }
     if ($caracteristica5!='') {
-        $where.= " AND descripcion1 LIKE '%".$caracteristica5."%'";
+        $where.= " AND b1.descripcion1 LIKE '%".$caracteristica5."%'";
         $filtrado .= $caracteristica5.' * ';
     }
     if ($nro_publicaciones!='') {
-        $where.= "AND (SELECT COUNT(codigo) FROM bases WHERE codigo = b.codigo)<=".$nro_publicaciones;
+        $where.= "AND b2.nro_publicaciones<=".$nro_publicaciones;
     }
 
 
+    // $sql = "SELECT ba.* 
+    //         FROM bases ba,(SELECT b.codigo as cod FROM bases b WHERE  1=1 ".$where." GROUP BY b.codigo) as v
+    //         WHERE v.cod = ba.codigo 
+    //         ORDER BY ba.codigo";
     $sql = "SELECT ba.* 
-            FROM bases ba,(SELECT b.codigo as cod FROM bases b WHERE  1=1 ".$where." GROUP BY b.codigo) as v
-            WHERE v.cod = ba.codigo 
-            ORDER BY ba.codigo";
+    FROM bases ba,(SELECT b1.codigo FROM bases b1,base_agrupados b2 WHERE b1.codigo = b2.codigo ".$where." GROUP BY b1.codigo) as v
+    WHERE v.codigo = ba.codigo 
+    ORDER BY ba.codigo";
     $model = new Bases();
     $resultado = $model->serverlista($sql);
 
 
 
-$pdf = new TCPDF(PDF_PAGE_ORIENTATION, PDF_UNIT, 'LETTER', true, 'UTF-8', false);
+$pdf = new tcpdf(PDF_PAGE_ORIENTATION, PDF_UNIT, 'LETTER', true, 'UTF-8', false);
 
 // set document information
         $pdf->SetCreator(PDF_CREATOR);
@@ -842,7 +844,7 @@ public function pruebapdfAction()
 require_once('tcpdf/examples/tcpdf_include.php');
 
 // create new PDF document
-$pdf = new TCPDF(PDF_PAGE_ORIENTATION, PDF_UNIT, 'LETTER', true, 'UTF-8', false);
+$pdf = new tcpdf(PDF_PAGE_ORIENTATION, PDF_UNIT, 'LETTER', true, 'UTF-8', false);
 
 // set document information
 $pdf->SetCreator(PDF_CREATOR);
@@ -853,7 +855,7 @@ $pdf->SetKeywords('TCPDF, PDF, example, test, guide');
 
 // set default header data
 $pdf->SetHeaderData(PDF_HEADER_LOGO, PDF_HEADER_LOGO_WIDTH, PDF_HEADER_TITLE.' 001', PDF_HEADER_STRING, array(0,64,255), array(0,64,128));
-$pdf->setFooterData(array(0,64,0), array(0,64,128));
+//$pdf->setFooterData(array(0,64,0), array(0,64,128));
 
 // set header and footer fonts
 $pdf->setHeaderFont(Array(PDF_FONT_NAME_MAIN, '', PDF_FONT_SIZE_MAIN));
@@ -951,10 +953,7 @@ for ($i=1; $i <100 ; $i++) {
 // This method has several options, check the source code documentation for more information.
 $pdf->Output('example_001.pdf', 'I');
 
-//============================================================+
-// END OF FILE
-//============================================================+
-
+//echo "hola";
 $this->view->disable();
 }
 

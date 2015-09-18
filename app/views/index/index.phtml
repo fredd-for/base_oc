@@ -67,8 +67,8 @@
                                         Publicaciones menor a 
                                     </div>
                                     <div class="col-xs-2">
-                                        <input type="number" name="nro_publicaciones" id="nro_publicaciones" placeholder="Numero de Publicaciones" class="form-control" value="10" value="<?php if (count($datos)>0) {
-                                          echo $datos['nro_publicaciones']; }  ?>" required>
+                                        <input type="number" name="nro_publicaciones" id="nro_publicaciones" placeholder="Numero de Publicaciones" class="form-control" value="<?php if (count($datos)>0) {
+                                          echo $datos['nro_publicaciones']; } else{ echo '10';}  ?>" required>
                                     </div>
                                 </div>
                             </div>
@@ -113,8 +113,21 @@
 
                                     <label class="col-xs-1 control-label">Tipo:</label>
                                     <div class="col-xs-3">
-                                        <input type="text" name="tipo" id="tipo" value="<?php if (count($datos)>0) {
-                                          echo $datos['tipo']; }  ?>" class="form-control">
+                                        <!-- <input type="text" name="tipo" id="tipo" value="<?php //if (count($datos)>0) {
+                                          //echo $datos['tipo']; }  ?>" class="form-control"> -->
+                                        <select name="tipo" id="tipo" class="form-control" placeholder='Seleccionar tipo'>
+                                            <option value="0">(Seleccionar)</option>
+                                            <?php foreach ($tipo as $u) { 
+                                                if ($u->tipo==$datos['tipo']) {
+                                                    $selected = 'selected';
+                                                }else{
+                                                    $selected = '';
+                                                }
+                                                ?>
+                                            <option value="<?php echo $u->tipo ?>" <?php echo $selected ?>><?php echo $u->tipo ?></option>
+                                            <?php } ?>
+                                        </select>
+
                                     </div>
                                 </div>
                             </div>

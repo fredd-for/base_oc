@@ -26,12 +26,13 @@ class Bases extends \Phalcon\Mvc\Model
         return new Resultset(null, $this->_db, $this->_db->getReadConnection()->query($sql));
     }
 
-    // public function tipo()
-    // {
-    //     $sql='SELECT tipo FROM bases GROUP BY tipo';
-    //     $this->_db = new Bases();
-    //     return new Resultset(null, $this->_db, $this->_db->getReadConnection()->query($sql));
-    // }
+    public function tipo()
+    {
+        $sql='SELECT tipo FROM bases GROUP BY tipo';
+        $this->_db = new Bases();
+        return new Resultset(null, $this->_db, $this->_db->getReadConnection()->query($sql));
+    }
+    
 
     public function fecha_max_min()
     {

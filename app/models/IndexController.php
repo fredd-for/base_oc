@@ -57,7 +57,7 @@ class IndexController extends ControllerRrhh {
             if ($sector!='0') {
                 $where.= " AND b1.sector='$sector' ";   
             }
-            if ($tipo!='0') {
+            if ($tipo!='') {
                 $where.= " AND b1.tipo='$tipo' ";   
             }
             if ($caracteristica1!='') {
@@ -141,13 +141,13 @@ $this->assets
 $model = new Bases();
 $ubicacion = $model->ubicacion();
 $sector = $model->sector();
-$tipo = $model->tipo();
+// $tipo = $model->tipo();
 $fecha_max_min = $model->fecha_max_min();
 
 $this->view->setVar('fecha_max_min', $fecha_max_min);
 $this->view->setVar('ubicacion', $ubicacion);
 $this->view->setVar('sector', $sector);
-$this->view->setVar('tipo', $tipo);
+// $this->view->setVar('tipo', $tipo);
 $this->view->setVar('usuario', $this->_user);
 $this->view->setVar('datos', $datos);
 $this->view->setVar('resultado', $resultado);
