@@ -42,6 +42,7 @@ class IndexController extends ControllerRrhh {
 
 
             $where = '';
+<<<<<<< HEAD
             // $where_or = '';
             if ($nro_publicaciones!='') {
                 $where.= " AND b2.nro_publicaciones <= '$nro_publicaciones'";
@@ -88,6 +89,49 @@ class IndexController extends ControllerRrhh {
  $query="SELECT b2.*,b1.descripcion,b1.fecha FROM bases b1,base_agrupados b2 
 WHERE b1.codigo=b2.codigo  ".$where."
 LIMIT 3 ";
+=======
+            $where_or = '';
+            if ($_POST['fecha_inicio']!='') {
+                $fecha_inicio = date("Y-m-d",strtotime($fecha_inicio));
+                $fecha_fin = date("Y-m-d",strtotime($fecha_fin));
+                $where.= " AND fecha BETWEEN '$fecha_inicio' AND '$fecha_fin' ";
+            }
+            if ($ubicacion!='0') {
+                $where.= " AND ubicacion='$ubicacion' ";   
+            }
+            if ($sector!='0') {
+                $where.= " AND sector='$sector' ";   
+            }
+            if ($tipo!='') {
+                $where.= " AND tipo='$tipo' ";   
+            }
+            if ($caracteristica1!='') {
+                $where.= " AND descripcion1 LIKE '%".$caracteristica1."%'";
+            }
+            if ($caracteristica2!='') {
+                $where.= " AND descripcion1 LIKE '%".$caracteristica2."%'";
+            }
+            if ($caracteristica3!='') {
+                $where.= " AND descripcion1 LIKE '%".$caracteristica3."%'";
+            }
+            if ($caracteristica4!='') {
+                $where.= " AND descripcion1 LIKE '%".$caracteristica4."%'";
+            }
+            if ($caracteristica5!='') {
+                $where.= " AND descripcion1 LIKE '%".$caracteristica5."%'";
+            }
+            if ($nro_publicaciones!='') {
+                $where.= " AND v.cantidad <= '$nro_publicaciones'";
+            }
+
+
+           $query= "SELECT v.*, b.* FROM
+ (SELECT codigo as cod, COUNT(codigo) as cantidad, MIN(fecha) as fecha_min,MAX(fecha) as  fecha_max 
+FROM bases 
+GROUP BY codigo) as v , bases b 
+WHERE v.cod = b.codigo ".$where.$where_or."
+ ORDER BY v.cantidad DESC LIMIT 3";
+>>>>>>> 5e379fab00acd6c6ef69a3c3c47d0b61aad670e2
  
 $this->view->setVar('sql', $query);
 
@@ -95,6 +139,7 @@ $model = new Bases();
 $resultado = $model->serverlista($query);
 
 
+<<<<<<< HEAD
 // $query = "SELECT count(b.codigo) as cantidad FROM
 //  (SELECT codigo as cod, COUNT(codigo) as cantidad 
 // FROM bases 
@@ -104,11 +149,23 @@ $resultado = $model->serverlista($query);
 
 $query ="SELECT COUNT(b1.codigo) as cantidad FROM bases b1,base_agrupados b2 
 WHERE b1.codigo=b2.codigo ".$where; 
+=======
+$query = "SELECT count(b.codigo) as cantidad FROM
+ (SELECT codigo as cod, COUNT(codigo) as cantidad 
+FROM bases 
+GROUP BY codigo) as v , bases b 
+WHERE v.cod = b.codigo ".$where.$where_or."
+ ORDER BY v.cantidad DESC";
+>>>>>>> 5e379fab00acd6c6ef69a3c3c47d0b61aad670e2
  $model = new Bases();
 $nro_avisos = $model->serverlista($query);
 
 }
 
+<<<<<<< HEAD
+=======
+
+>>>>>>> 5e379fab00acd6c6ef69a3c3c47d0b61aad670e2
 // $this->assets
 // ->addCss('/jqwidgets/styles/jqx.base.css')
 // ->addCss('/jqwidgets/styles/jqx.custom.css');
@@ -141,13 +198,19 @@ $this->assets
 $model = new Bases();
 $ubicacion = $model->ubicacion();
 $sector = $model->sector();
+<<<<<<< HEAD
 $tipo = $model->tipo();
+=======
+>>>>>>> 5e379fab00acd6c6ef69a3c3c47d0b61aad670e2
 $fecha_max_min = $model->fecha_max_min();
 
 $this->view->setVar('fecha_max_min', $fecha_max_min);
 $this->view->setVar('ubicacion', $ubicacion);
 $this->view->setVar('sector', $sector);
+<<<<<<< HEAD
 $this->view->setVar('tipo', $tipo);
+=======
+>>>>>>> 5e379fab00acd6c6ef69a3c3c47d0b61aad670e2
 $this->view->setVar('usuario', $this->_user);
 $this->view->setVar('datos', $datos);
 $this->view->setVar('resultado', $resultado);
